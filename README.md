@@ -36,13 +36,13 @@ Epoch  5/10: 100%|████████████████████�
 Epoch  6/10: 100%|██████████████████████| 223/223 [01:45<00:00,  2.11it/s, loss=0.410496]
 Epoch  7/10: 100%|██████████████████████| 223/223 [01:40<00:00,  2.22it/s, loss=0.412155]
 Epoch  8/10: 100%|██████████████████████| 223/223 [01:37<00:00,  2.29it/s, loss=0.401274]
+(i) Model saved at ./weights/model.pt
 Epoch  9/10: 100%|██████████████████████| 223/223 [01:36<00:00,  2.32it/s, loss=0.391534]
 Epoch 10/10: 100%|██████████████████████| 223/223 [01:34<00:00,  2.35it/s, loss=0.386598]
-(i) Model saved at ./weights/model.pt
 (i) Loss plot saved at ./images/output/loss_plot.png
 ```
 
-![Loss plot](./images/output/loss_plot.png "Loss plot")
+![Loss plot](./images/output/loss_plot_boxhill.png "Loss plot")
 
 ## Predict
 
@@ -56,4 +56,4 @@ $ python predict.py
 (i) Prediction image saved at ./images/output/prediction.png
 ```
 
-![Predicted image](./images/output/prediction.png "Predicted image")
+![Predicted image](./images/output/prediction_boxhill.png "Predicted image")
