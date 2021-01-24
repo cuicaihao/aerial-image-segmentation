@@ -82,8 +82,8 @@ def tile_dataset(tile_size, tile_stride_ratio=1.0):
 
     # Clip tiles accumulators to the actual number of tiles
     # Since some tiles might have been discarded, n <= tile_count
-    x_tiles = torch.from_numpy(x_tiles[0:n, :, :, :])
-    y_tiles = torch.from_numpy(y_tiles[0:n, :, :])
+    x_tiles = torch.from_numpy(x_tiles[0 : n + 1, :, :, :])
+    y_tiles = torch.from_numpy(y_tiles[0 : n + 1, :, :])
     # x_tiles = torch.from_numpy(x_tiles)
     # y_tiles = torch.from_numpy(y_tiles)
     x_tiles = x_tiles.to(dtype=utils.x_dtype())

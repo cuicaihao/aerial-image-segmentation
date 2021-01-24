@@ -23,8 +23,8 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 
-INPUT_IMAGE_PATH = "./images/Boxhill/RGB.png"
-LABEL_IMAGE_PATH = "./images/Boxhill/GT.png"
+INPUT_IMAGE_PATH = "./images/case_02/RGB.png"
+LABEL_IMAGE_PATH = "./images/case_02/GT.png"
 WEIGHTS_FILE_PATH = "./weights/Adam.model.weights.pt"
 
 

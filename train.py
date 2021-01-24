@@ -4,7 +4,7 @@ Software Design
 
 Authoer: Chris Cui
 
-Time: 2019-09-03
+Time: 2021-Jan-20
 """
 
 import torch
@@ -86,6 +86,6 @@ if __name__ == "__main__":
 
     model_path = utils.save_weights_to_disk(model)
     print("(i) Model saved at {}".format(model_path))
-    loss_plot_path = "./images/output/loss_plot_boxhill.png"
+    loss_plot_path = "./images/output/loss_plot.png"
     stats.save_loss_plot(loss_plot_path)
     print("(i) Loss plot saved at {}".format(loss_plot_path))

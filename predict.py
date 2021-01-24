@@ -54,10 +54,11 @@ if __name__ == "__main__":
     input_image = utils.input_image()
     pred_image, mask_image = utils.overlay_class_prediction(input_image, prediction)
 
-    pred_image_path = "./images/output/prediction_boxhill.png"
+    pred_image_path = "./images/output/prediction.png"
     pred_image.save(pred_image_path)
 
-    pred_image_path = "./images/output/prediction_boxhill_mask.png"
-    mask_image.save(pred_image_path)
+    pred_mask_path = "./images/output/mask.png"
+    mask_image.save(pred_mask_path)
 
     print("(i) Prediction and Mask image saved at {}".format(pred_image_path))
+    print("(ii) Prediction and Mask image saved at {}".format(pred_mask_path))
