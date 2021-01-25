@@ -1,11 +1,11 @@
 # -*- utf-8: python -*-
-'''
+"""
 Software Design
 
 Authoer: Chris Cui
 
 Time: 2019-09-03
-'''
+"""
 
 # Source: https://github.com/ycszen/pytorch-segmentation/blob/master/loss.py
 
@@ -15,8 +15,7 @@ import torch.nn.functional as F
 
 
 class CrossEntropyLoss2d(torch.nn.Module):
-
-    def __init__(self, weight=None, reduction='mean'):
+    def __init__(self, weight=None, reduction="mean"):
         super(CrossEntropyLoss2d, self).__init__()
         self.nll_loss = torch.nn.NLLLoss(weight, reduction=reduction)
 

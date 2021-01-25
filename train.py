@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     # TODO: Get through CLI args
     # case 2 2000x2000
-    epochs = 400
+    epochs = 200
     # epochs = 20
     batch_size = 8 * 4
     #  case 3: 1000x1000;
@@ -92,6 +92,7 @@ if __name__ == "__main__":
     model = FCNN()
     # load the pretrained model
     model = utils.load_weights_from_disk(model)
+
     train_loader = dataset.training_loader(
         batch_size=batch_size, tile_size=tile_size, shuffle=True  # use shuffle
     )  # turn the shuffle
