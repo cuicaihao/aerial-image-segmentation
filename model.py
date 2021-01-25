@@ -29,10 +29,10 @@ class FCNN(nn.Module):
         x = torch.cat((x1, x2), 1)  # concatenated on channel
         x = self.conv2(x)
         x = F.relu(x)
-        x = F.max_pool2d(x, (2, 2))
+        x = F.max_pool2d(x, (2, 2))  # 0.5x
         x = self.conv3(x)
         x = F.relu(x)
-        x = F.interpolate(x, scale_factor=(2, 2))
-        x = self.conv4(x)
+        x = F.interpolate(x, scale_factor=(2, 2))  # 2.0x
+        x = self.conv4(x)  # nc layer same size
 
         return x

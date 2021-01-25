@@ -14,6 +14,7 @@ import utils
 import dataset
 from model import FCNN
 from loss import CrossEntropyLoss2d
+from datetime import datetime
 
 
 def train(
@@ -62,9 +63,18 @@ def train(
 
 if __name__ == "__main__":
 
+    now = datetime.now()
+    start_time = now.strftime("%H:%M:%S")
+
     # TODO: Get through CLI args
-    epochs = 200
-    batch_size = 8  # 8x8
+    # case 2 2000x2000
+    epochs = 400 * 4
+    # epochs = 20
+    batch_size = 8 * 4
+    #  case 3: 1000x1000;
+    # epochs = 400
+    # batch_size = 8
+
     # use_gpu = False
     use_gpu = True
     tile_size = (250, 250)
@@ -72,7 +82,11 @@ if __name__ == "__main__":
     weight_decay = 0.001
     device = utils.device(use_gpu=use_gpu)
     model = FCNN()
-    train_loader = dataset.training_loader(batch_size=batch_size, tile_size=tile_size)
+    # load the pretrained model
+    model = utils.load_weights_from_disk(model)
+    train_loader = dataset.training_loader(
+        batch_size=batch_size, tile_size=tile_size, shuffle=True
+    )  # turn the shuffle
     model, stats = train(
         model=model,
         train_loader=train_loader,
@@ -84,8 +98,15 @@ if __name__ == "__main__":
         weight_decay=weight_decay,
     )
 
+    now = datetime.now()
+    end_time = now.strftime("%H:%M:%S")
+
     model_path = utils.save_weights_to_disk(model)
     print("(i) Model saved at {}".format(model_path))
-    loss_plot_path = "./images/output/loss_plot.png"
+
+    loss_plot_path = "./output/loss_plot.png"
+
     stats.save_loss_plot(loss_plot_path)
     print("(i) Loss plot saved at {}".format(loss_plot_path))
+
+    print(f"model start: {start_time} end: {end_time}.")

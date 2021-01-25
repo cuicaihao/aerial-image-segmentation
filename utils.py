@@ -22,10 +22,17 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+# INPUT_IMAGE_PATH = "./images/case_01/RGB.png"
+# LABEL_IMAGE_PATH = "./images/case_01/GT.png"
+# WEIGHTS_FILE_PATH = "./weights/model.weights.pt"
 
 INPUT_IMAGE_PATH = "./images/case_02/RGB.png"
 LABEL_IMAGE_PATH = "./images/case_02/GT.png"
-WEIGHTS_FILE_PATH = "./weights/Adam.model.weights.pt"
+WEIGHTS_FILE_PATH = "./weights/Boxhill.model.weights.pt"
+
+# INPUT_IMAGE_PATH = "./images/case_03/RGB.png"
+# LABEL_IMAGE_PATH = "./images/case_03/GT.png"
+# WEIGHTS_FILE_PATH = "./weights/CapeTown.model.weights.pt"
 
 
 @enum.unique
@@ -55,6 +62,7 @@ class Stats:
         plt.ylim(ymin=0, ymax=int(math.ceil(np.max(self.__losses))))
         plt.savefig(fpath)
         plt.close()
+        np.save(fpath + ".npy", self.__losses)
 
     def fmt_dict(self):
         return {"loss": format(self.loss_mean, self.__float_fmt)}
