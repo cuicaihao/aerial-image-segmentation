@@ -104,7 +104,12 @@ def save_weights_to_disk(model):
 
 def load_weights_from_disk(model):
     path = WEIGHTS_FILE_PATH
-    model.load_state_dict(torch.load(path))
+    if torch.cuda.is_available():
+        def map_location(storage, loc): return storage.cuda()
+    else:
+        map_location = 'cpu'
+    weights = torch.load(path, map_location=map_location)
+    model.load_state_dict(weights)
     return model
 
 
