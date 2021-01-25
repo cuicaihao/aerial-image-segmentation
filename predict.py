@@ -45,7 +45,10 @@ if __name__ == "__main__":
     # device = utils.device(use_gpu=use_gpu)
     device = utils.device(use_gpu=False)
     model = FCNN()
-    model = utils.load_weights_from_disk(model)
+    # model = utils.load_weights_from_disk(model)
+    model = utils.load_entire_model(model)
+    # call model.eval() to set dropout and batch normalization layers to evaluation mode before running inference.
+    model.eval()
 
     print(model)
     print(summary(model, (3, 250, 250)))

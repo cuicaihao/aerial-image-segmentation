@@ -102,6 +102,12 @@ def save_weights_to_disk(model):
     return path
 
 
+def save_entire_model(model):
+    path = WEIGHTS_FILE_PATH
+    torch.save(model, path)
+    return path
+
+
 def load_weights_from_disk(model):
     path = WEIGHTS_FILE_PATH
     if torch.cuda.is_available():
@@ -110,6 +116,16 @@ def load_weights_from_disk(model):
         map_location = 'cpu'
     weights = torch.load(path, map_location=map_location)
     model.load_state_dict(weights)
+    return model
+
+
+def load_entire_model(model):
+    path = WEIGHTS_FILE_PATH
+    if torch.cuda.is_available():
+        def map_location(storage, loc): return storage.cuda()
+    else:
+        map_location = 'cpu'
+    model = torch.load(path, map_location=map_location)
     return model
 
 
@@ -159,7 +175,7 @@ def extend_image(image, new_size, color=0):
     return new_image
 
 
-def overlay_class_prediction(image, prediction, color=(255, 0, 0)):
+def overlay_class_prediction(image, prediction, color=(255, 0, 0)):  # color in red
 
     input_image = image
 

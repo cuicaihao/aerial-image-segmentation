@@ -75,7 +75,7 @@ if __name__ == "__main__":
 
     # TODO: Get through CLI args
     # case 2 2000x2000
-    epochs = 20
+    epochs = 2  # Testing only
     # epochs = 20
     batch_size = 8 * 4
     #  case 3: 1000x1000;
@@ -91,7 +91,8 @@ if __name__ == "__main__":
     weight_decay = 0.001
     model = FCNN()
     # load the pretrained model
-    model = utils.load_weights_from_disk(model)
+    # model = utils.load_weights_from_disk(model)
+    # model = utils.load_entire_model(model)
 
     train_loader = dataset.training_loader(
         batch_size=batch_size, tile_size=tile_size, shuffle=True  # use shuffle
@@ -112,7 +113,8 @@ if __name__ == "__main__":
 
     # comment the following section to compare the results with 4 workers and pin_memory in dataloader.
     # # save the model
-    model_path = utils.save_weights_to_disk(model)
+    # model_path = utils.save_weights_to_disk(model)
+    model_path = utils.save_entire_model(model)
     print("(i) Model saved at {}".format(model_path))
 
     # save the loss figure and data
