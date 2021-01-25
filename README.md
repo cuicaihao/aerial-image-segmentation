@@ -25,6 +25,28 @@ Create a new virtual environment to install the required libraries, use 'conda' 
 - torchvision==0.8.2
 - tqdm==4.51.0
 
+### Suggestion: Use GPU and CUDA 11
+
+Here is my experimental result on case 2. As you can see on XPS 15 i7CPU with GPU 1050TI maxQ 4GB RAM with CUDA 11, each epoch takes about 4s.
+
+```bash
+Epoch 18/20: 100%|███████████████████ | 8/8 [00:04<00:00,  1.76it/s, loss=0.274017]
+Epoch 19/20: 100%|███████████████████ | 8/8 [00:04<00:00,  1.81it/s, loss=0.272246]
+Epoch 20/20: 100%|███████████████████ | 8/8 [00:04<00:00,  1.82it/s, loss=0.273455]
+
+```
+
+However, same code runs on mac-mini CPU only (i5) which takes 42s~43s.
+
+```bash
+Epoch  2/20: 100%|███████████████████| 8/8 [00:42<00:00,  5.34s/it, loss=0.349085]
+Epoch  3/20: 100%|███████████████████| 8/8 [00:43<00:00,  5.43s/it, loss=0.345961]
+Epoch  4/20:  50%|██████████         | 4/8 [00:25<00:25,  6.44s/it, loss=0.342271]
+# ctrl+c, can not wait for this to finish, 20*40s is 15 mins. On GPU this only cost 80s (1.33 mins)
+```
+
+** It is fair to say GPU is at least 10 times faster than the CPU.**
+
 ## Train (Deep) ConvNets - U-Nets
 
 ```
