@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 
 # INPUT_IMAGE_PATH = "./images/case_01/RGB.png"
 # LABEL_IMAGE_PATH = "./images/case_01/GT.png"
-# WEIGHTS_FILE_PATH = "./weights/model.weights.pt"
+# WEIGHTS_FILE_PATH = "./weights/Adam.model.weights.pt"
 
 INPUT_IMAGE_PATH = "./images/case_02/RGB.png"
 LABEL_IMAGE_PATH = "./images/case_02/GT.png"

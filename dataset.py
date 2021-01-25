@@ -35,7 +35,11 @@ def training_loader(batch_size, tile_size, shuffle=False):
     dataset = tile_dataset(tile_size, tile_stride_ratio=tile_stride_ratio)
 
     loader = torch.utils.data.DataLoader(
-        dataset, batch_size=batch_size, shuffle=shuffle, num_workers=1
+        dataset,
+        batch_size=batch_size,
+        shuffle=shuffle,
+        num_workers=4,  # default is 1, use 4 to compare the performance.
+        pin_memory=True,  # use memory pining to enable fast data transfer to CUDA-enabled GPU.
     )
 
     return loader

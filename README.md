@@ -40,7 +40,7 @@ Epoch  3/200: 100%|████████████████████�
 (i) Loss plot saved at ./images/output/loss_plot.png
 ```
 
-![Loss plot](./images/output/loss_plot.png "Loss plot")
+![Loss plot](./output/case_3/400%20epochs/loss_plot.png  "Loss plot")
 
 ## Predict (Training Validation)
 Use the training data as input to test the model.
@@ -56,13 +56,13 @@ $ python predict.py
 
 **Prediction with mask**:
 
-![Predicted image](./images/output/case_2/prediction.png "Predicted image")
+![Predicted image](./output/case_3/400%20epochs/prediction.png "Predicted image")
 
 **Binary with mask**:
 This is an binary mask, you can see there are extra works needed to improve the restuls. The improments can be from the `Deep Learning model` or the `Image Postprocessing method`.  
 
-![Predicted image](./images/output/case_2/mask.png "Predicted image")
-
+![Predicted image](./output/case_3/400%20epochs/mask.png "Predicted image")
+ 
 ### Reference
 - Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation, Liang-Chieh Chen, Yukun Zhu, George Papandreou, Florian Schroff, and Hartwig Adam, arXiv: 1802.02611, 2018.
 - Xception: Deep Learning with Depthwise Separable Convolutions, François Chollet, Proc. of CVPR, 2017.

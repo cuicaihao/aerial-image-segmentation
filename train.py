@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
     # TODO: Get through CLI args
     # case 2 2000x2000
-    epochs = 400 * 4
+    epochs = 400
     # epochs = 20
     batch_size = 8 * 4
     #  case 3: 1000x1000;
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # load the pretrained model
     model = utils.load_weights_from_disk(model)
     train_loader = dataset.training_loader(
-        batch_size=batch_size, tile_size=tile_size, shuffle=True
+        batch_size=batch_size, tile_size=tile_size, shuffle=True  # use shuffle
     )  # turn the shuffle
     model, stats = train(
         model=model,
@@ -101,12 +101,15 @@ if __name__ == "__main__":
     now = datetime.now()
     end_time = now.strftime("%H:%M:%S")
 
+    # comment the following section to compare the results with 4 workers and pin_memory in dataloader.
+    # # save the model
     model_path = utils.save_weights_to_disk(model)
     print("(i) Model saved at {}".format(model_path))
 
+    # save the loss figure and data
     loss_plot_path = "./output/loss_plot.png"
-
     stats.save_loss_plot(loss_plot_path)
     print("(i) Loss plot saved at {}".format(loss_plot_path))
 
+    # show time cost
     print(f"model start: {start_time} end: {end_time}.")
