@@ -7,6 +7,7 @@ Authoer: Chris Cui
 Time: 2019-09-03
 """
 
+import matplotlib.pyplot as plt
 import math
 import enum
 import tqdm
@@ -20,7 +21,6 @@ import matplotlib
 
 # https://matplotlib.org/faq/usage_faq.html#what-is-a-backend
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 
 # INPUT_IMAGE_PATH = "./images/case_01/RGB.png"
 # LABEL_IMAGE_PATH = "./images/case_01/GT.png"
@@ -73,10 +73,9 @@ def device(use_gpu=True):
     if use_gpu and torch.cuda.is_available():
         return torch.device("cuda")
 
-    if use_gpu:
+    if not use_gpu:
         # TODO: Warn that GPU is not available and we're using CPU
-        pass
-
+        print("You are running on a CPU-only machine.")
     return torch.device("cpu")
 
 
@@ -105,8 +104,7 @@ def save_weights_to_disk(model):
 
 def load_weights_from_disk(model):
     path = WEIGHTS_FILE_PATH
-    weights = torch.load(path)
-    model.load_state_dict(weights)
+    model.load_state_dict(torch.load(path))
     return model
 
 
@@ -185,7 +183,7 @@ def overlay_class_prediction(image, prediction, color=(255, 0, 0)):
     for n in range(N):
         (x, y) = next(tiles)
         tile = prediction[n, :, :]
-        mask[y : y + H, x : x + W] = tile * 255
+        mask[y: y + H, x: x + W] = tile * 255
 
     color_image = Image.new("RGB", extended_size, color=color)
     mask_image = Image.fromarray(mask.astype("uint8"), mode="L")

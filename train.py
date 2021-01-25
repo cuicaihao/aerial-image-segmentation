@@ -15,6 +15,7 @@ import dataset
 from model import FCNN
 from loss import CrossEntropyLoss2d
 from datetime import datetime
+import time
 
 
 def train(
@@ -28,6 +29,7 @@ def train(
     momentum=0.9,
     weight_decay=5e-3,
 ):
+    since = time.time()
     criterion = CrossEntropyLoss2d()
 
     # optimizer = torch.optim.SGD(
@@ -58,6 +60,11 @@ def train(
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+
+    time_elapsed = time.time() - since
+    print('Training complete in {:.0f}m {:.0f}s'.format(
+        time_elapsed // 60, time_elapsed % 60))
+    # print('Best val Acc: {:4f}'.format(best_acc))
     return model, training_stats
 
 
@@ -77,10 +84,11 @@ if __name__ == "__main__":
 
     # use_gpu = False
     use_gpu = True
+    device = utils.device(use_gpu=use_gpu)
     tile_size = (250, 250)
+
     learning_rate = 1e-4
     weight_decay = 0.001
-    device = utils.device(use_gpu=use_gpu)
     model = FCNN()
     # load the pretrained model
     model = utils.load_weights_from_disk(model)
