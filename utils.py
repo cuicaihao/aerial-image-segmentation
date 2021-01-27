@@ -26,13 +26,13 @@ matplotlib.use("Agg")
 # LABEL_IMAGE_PATH = "./images/case_01/GT.png"
 # WEIGHTS_FILE_PATH = "./weights/Adam.model.weights.pt"
 
-INPUT_IMAGE_PATH = "./images/case_02/RGB.png"
-LABEL_IMAGE_PATH = "./images/case_02/GT.png"
-WEIGHTS_FILE_PATH = "./weights/Boxhill.model.weights.pt"
+# INPUT_IMAGE_PATH = "./images/case_02/RGB.png"
+# LABEL_IMAGE_PATH = "./images/case_02/GT.png"
+# WEIGHTS_FILE_PATH = "./weights/Boxhill.model.weights.pt"
 
-# INPUT_IMAGE_PATH = "./images/case_03/RGB.png"
-# LABEL_IMAGE_PATH = "./images/case_03/GT.png"
-# WEIGHTS_FILE_PATH = "./weights/CapeTown.model.weights.pt"
+INPUT_IMAGE_PATH = "./images/case_03/RGB.png"
+LABEL_IMAGE_PATH = "./images/case_03/GT.png"
+WEIGHTS_FILE_PATH = "./weights/CapeTown.model.weights.pt"
 
 
 @enum.unique
@@ -111,20 +111,26 @@ def save_entire_model(model):
 def load_weights_from_disk(model):
     path = WEIGHTS_FILE_PATH
     if torch.cuda.is_available():
-        def map_location(storage, loc): return storage.cuda()
+
+        def map_location(storage, loc):
+            return storage.cuda()
+
     else:
-        map_location = 'cpu'
+        map_location = "cpu"
     weights = torch.load(path, map_location=map_location)
     model.load_state_dict(weights)
     return model
 
 
-def load_entire_model(model):
+def load_entire_model(model, use_gpu=False):
     path = WEIGHTS_FILE_PATH
-    if torch.cuda.is_available():
-        def map_location(storage, loc): return storage.cuda()
+    if torch.cuda.is_available() and use_gpu:
+
+        def map_location(storage, loc):
+            return storage.cuda()
+
     else:
-        map_location = 'cpu'
+        map_location = "cpu"
     model = torch.load(path, map_location=map_location)
     return model
 
@@ -204,7 +210,7 @@ def overlay_class_prediction(image, prediction, color=(255, 0, 0)):  # color in 
     for n in range(N):
         (x, y) = next(tiles)
         tile = prediction[n, :, :]
-        mask[y: y + H, x: x + W] = tile * 255
+        mask[y : y + H, x : x + W] = tile * 255
 
     color_image = Image.new("RGB", extended_size, color=color)
     mask_image = Image.fromarray(mask.astype("uint8"), mode="L")

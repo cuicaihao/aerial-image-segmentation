@@ -16,6 +16,7 @@ from model import FCNN
 from loss import CrossEntropyLoss2d
 from datetime import datetime
 import time
+from torchsummary import summary
 
 
 def train(
@@ -62,8 +63,11 @@ def train(
             optimizer.step()
 
     time_elapsed = time.time() - since
-    print('Training complete in {:.0f}m {:.0f}s'.format(
-        time_elapsed // 60, time_elapsed % 60))
+    print(
+        "Training complete in {:.0f}m {:.0f}s".format(
+            time_elapsed // 60, time_elapsed % 60
+        )
+    )
     # print('Best val Acc: {:4f}'.format(best_acc))
     return model, training_stats
 
@@ -74,14 +78,12 @@ if __name__ == "__main__":
     start_time = now.strftime("%H:%M:%S")
 
     # TODO: Get through CLI args
-    # case 2 2000x2000
-    epochs = 2  # Testing only
-    # epochs = 20
-    batch_size = 8 * 4
+    # epochs = 2 # debug only
+    epochs = 200  # Testing only
+    batch_size = 8
     #  case 3: 1000x1000;
     # epochs = 400
     # batch_size = 8
-
     # use_gpu = False
     use_gpu = True
     device = utils.device(use_gpu=use_gpu)
@@ -92,7 +94,9 @@ if __name__ == "__main__":
     model = FCNN()
     # load the pretrained model
     # model = utils.load_weights_from_disk(model)
-    # model = utils.load_entire_model(model)
+    # model = utils.load_entire_model(model, use_gpu)
+    print(model)
+    # print(summary(model, (3, 250, 250)))
 
     train_loader = dataset.training_loader(
         batch_size=batch_size, tile_size=tile_size, shuffle=True  # use shuffle
