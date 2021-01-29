@@ -6,6 +6,11 @@ from utils import ClassLabel
 from torchsummary import summary
 
 
+from torch.utils.tensorboard import SummaryWriter
+# default `log_dir` is "runs" - we'll be more specific here
+writer = SummaryWriter('runs/aerial_image_segmentation')
+
+
 def predict(model, data_loader, device, class_label):
 
     model.eval()
@@ -56,10 +61,12 @@ if __name__ == "__main__":
 
     loader = dataset.full_image_loader(tile_size=tile_size)
 
-    prediction = predict(model, loader, device=device, class_label=ClassLabel.house)
+    prediction = predict(model, loader, device=device,
+                         class_label=ClassLabel.house)
 
     input_image = utils.input_image()
-    pred_image, mask_image = utils.overlay_class_prediction(input_image, prediction)
+    pred_image, mask_image = utils.overlay_class_prediction(
+        input_image, prediction)
 
     pred_image_path = "./output/prediction.png"
     pred_image.save(pred_image_path)

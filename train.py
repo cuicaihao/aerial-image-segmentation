@@ -18,6 +18,8 @@ from datetime import datetime
 import time
 from torchsummary import summary
 
+from torch.utils.tensorboard import SummaryWriter
+
 
 def train(
     model,
@@ -30,6 +32,8 @@ def train(
     momentum=0.9,
     weight_decay=5e-3,
 ):
+
+    writer = SummaryWriter('runs/aerial_image_segmentation')
     since = time.time()
     criterion = CrossEntropyLoss2d()
 
@@ -44,6 +48,7 @@ def train(
     model = model.to(device=device)
     criterion = criterion.to(device=device)
     training_stats = utils.Stats()
+    running_loss = 0.0
     for n in range(epochs):
         epoch_stats = utils.Stats()
 
@@ -61,6 +66,12 @@ def train(
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            running_loss += loss.item()
+
+        writer.add_scalar('training loss',
+                          running_loss / batch_size,
+                          n * len(train_loader) + i)
+        running_loss = 0.0
 
     time_elapsed = time.time() - since
     print(
