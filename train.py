@@ -33,7 +33,8 @@ def train(
     weight_decay=5e-3,
 ):
 
-    writer = SummaryWriter('runs/aerial_image_segmentation')
+    writer = SummaryWriter("runs/aerial_image_segmentation")
+
     since = time.time()
     criterion = CrossEntropyLoss2d()
 
@@ -68,9 +69,9 @@ def train(
             optimizer.step()
             running_loss += loss.item()
 
-        writer.add_scalar('training loss',
-                          running_loss / batch_size,
-                          n * len(train_loader) + i)
+        writer.add_scalar(
+            "training loss", running_loss / batch_size, n * len(train_loader) + i
+        )
         running_loss = 0.0
 
     time_elapsed = time.time() - since
@@ -90,7 +91,7 @@ if __name__ == "__main__":
 
     # TODO: Get through CLI args
     # epochs = 2 # debug only
-    epochs = 200  # Testing only
+    epochs = 50  # Testing only
     batch_size = 8
     #  case 3: 1000x1000;
     # epochs = 400
@@ -105,7 +106,7 @@ if __name__ == "__main__":
     model = FCNN()
     # load the pretrained model
     # model = utils.load_weights_from_disk(model)
-    # model = utils.load_entire_model(model, use_gpu)
+    model = utils.load_entire_model(model, use_gpu)
     print(model)
     # print(summary(model, (3, 250, 250)))
 

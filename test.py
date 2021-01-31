@@ -45,7 +45,9 @@ if __name__ == "__main__":
     device = utils.device(use_gpu=use_gpu)
 
     model = FCNN()
-    model = utils.load_weights_from_disk(model)
+    # model = utils.load_weights_from_disk(model)
+    model = utils.load_entire_model(model, use_gpu)
+
     print(model)
 
     loader = dataset.full_image_loader(tile_size=tile_size)
@@ -56,10 +58,10 @@ if __name__ == "__main__":
     input_image = Image.open(INPUT_IMAGE_PATH)
     pred_image, mask_image = utils.overlay_class_prediction(input_image, prediction)
 
-    pred_image_path = "./images/output/google_earth.png"
+    pred_image_path = "./output/google_earth.png"
     pred_image.save(pred_image_path)
 
-    pred_image_path = "./images/output/google_earth_mask.png"
+    pred_image_path = "./output/google_earth_mask.png"
     mask_image.save(pred_image_path)
 
     print("(i) Prediction and Mask image saved at {}".format(pred_image_path))

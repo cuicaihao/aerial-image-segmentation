@@ -54,7 +54,7 @@ def predict(model, data_loader, device, class_label):
 def matplotlib_imshow(img, one_channel=False):
     if one_channel:
         img = img.mean(dim=0)
-    img = img / 2 + 0.5     # unnormalize
+    img = img / 2 + 0.5  # unnormalize
     npimg = img.numpy()
     if one_channel:
         plt.imshow(npimg, cmap="Greys")
@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
     # Step 1: TensorBoard setup
     # default `log_dir` is "runs" - we'll be more specific here
-    writer = SummaryWriter('runs/aerial_image_segmentation')
+    writer = SummaryWriter("runs/aerial_image_segmentation")
 
     # Step 2: Writing to TensorBoard
 
@@ -78,7 +78,6 @@ if __name__ == "__main__":
     images = torch.tensor(np.zeros((16, 3, 250, 250)))
     i = 0
     for x, y in loader:
-
         # print(x.shape, y.shape)
         images[i, :, :, :] = x
         i = i + 1
@@ -90,7 +89,7 @@ if __name__ == "__main__":
     # matplotlib_imshow(img_grid, one_channel=True)
 
     # # write to tensorboard
-    writer.add_image('aerial_images_samples', img_grid, 1)
+    writer.add_image("aerial_images_samples", img_grid, 1)
 
     # 3. Inspect the model using TensorBoard
     use_gpu = False
