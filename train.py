@@ -6,19 +6,18 @@ Authoer: Chris Cui
 
 Time: 2021-Jan-20
 """
-
+import time
 import torch
-import torch.optim
-
 import utils
 import dataset
 from model import FCNN
 from loss import CrossEntropyLoss2d
 from datetime import datetime
-import time
 from torchsummary import summary
-
 from torch.utils.tensorboard import SummaryWriter
+
+# add args parser
+from app_arguments import app_argparse
 
 
 def train(
@@ -47,6 +46,9 @@ def train(
     )
     model.train()
     model = model.to(device=device)
+
+    summary(model, (3, tile_size[0], tile_size[1]))
+
     criterion = criterion.to(device=device)
     training_stats = utils.Stats()
     running_loss = 0.0
@@ -70,7 +72,8 @@ def train(
             running_loss += loss.item()
 
         writer.add_scalar(
-            "training loss", running_loss / batch_size, n * len(train_loader) + i
+            "training loss", running_loss /
+            batch_size, n * len(train_loader) + i
         )
         running_loss = 0.0
 
@@ -85,34 +88,45 @@ def train(
 
 
 if __name__ == "__main__":
-
     now = datetime.now()
     start_time = now.strftime("%H:%M:%S")
 
     # TODO: Get through CLI args
-    # epochs = 2 # debug only
-    epochs = 50  # Testing only
-    batch_size = 8
-    #  case 3: 1000x1000;
-    # epochs = 400
-    # batch_size = 8
-    # use_gpu = False
-    use_gpu = True
-    device = utils.device(use_gpu=use_gpu)
-    tile_size = (250, 250)
+    # Step 01: Get Input Resources and Model Configuration
+    parser = app_argparse()
+    args = parser.parse_args()
+    print(args)
 
-    learning_rate = 1e-4
-    weight_decay = 0.001
+    INPUT_IMAGE_PATH = args.input_RGB
+    LABEL_IMAGE_PATH = args.input_GT
+    WEIGHTS_FILE_PATH = args.output_model_path
+    LOSS_PLOT_PATH = args.output_loss_plot
+
+    epochs = args.epochs
+    batch_size = args.batch_size
+    use_gpu = args.use_gpu
+    use_pretrain = args.use_pretrain
+    device = utils.device(use_gpu=use_gpu)
+    tile_size = args.tile_size
+    learning_rate = args.learning_rate
+    weight_decay = args.weight_decay
+
+    # init model structure
     model = FCNN()
+
     # load the pretrained model
     # model = utils.load_weights_from_disk(model)
-    model = utils.load_entire_model(model, use_gpu)
-    print(model)
-    # print(summary(model, (3, 250, 250)))
+    if use_pretrain:
+        model = utils.load_entire_model(model, WEIGHTS_FILE_PATH, use_gpu)
+        print("use pretrained model!")
 
-    train_loader = dataset.training_loader(
-        batch_size=batch_size, tile_size=tile_size, shuffle=True  # use shuffle
-    )  # turn the shuffle
+    train_loader = dataset.training_loader(image_path=INPUT_IMAGE_PATH,
+                                           label_path=LABEL_IMAGE_PATH,
+                                           batch_size=batch_size,
+                                           tile_size=tile_size,
+                                           shuffle=True  # use shuffle
+                                           )  # turn the shuffle
+
     model, stats = train(
         model=model,
         train_loader=train_loader,
@@ -124,19 +138,15 @@ if __name__ == "__main__":
         weight_decay=weight_decay,
     )
 
-    now = datetime.now()
-    end_time = now.strftime("%H:%M:%S")
-
     # comment the following section to compare the results with 4 workers and pin_memory in dataloader.
     # # save the model
     # model_path = utils.save_weights_to_disk(model)
-    model_path = utils.save_entire_model(model)
-    print("(i) Model saved at {}".format(model_path))
+    model_path = utils.save_entire_model(model, WEIGHTS_FILE_PATH)
 
     # save the loss figure and data
-    loss_plot_path = "./output/loss_plot.png"
-    stats.save_loss_plot(loss_plot_path)
-    print("(i) Loss plot saved at {}".format(loss_plot_path))
+    stats.save_loss_plot(LOSS_PLOT_PATH)
 
     # show time cost
+    now = datetime.now()
+    end_time = now.strftime("%H:%M:%S")
     print(f"model start: {start_time} end: {end_time}.")

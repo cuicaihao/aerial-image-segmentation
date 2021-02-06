@@ -7,17 +7,16 @@ Authoer: Chris Cui
 Time: 2019-09-03
 """
 
-import matplotlib.pyplot as plt
 import math
+import torch
 import enum
 import tqdm
-
 import numpy as np
 from PIL import Image
 
-import torch
-
 import matplotlib
+import matplotlib.pyplot as plt
+
 
 # https://matplotlib.org/faq/usage_faq.html#what-is-a-backend
 matplotlib.use("Agg")
@@ -30,9 +29,9 @@ matplotlib.use("Agg")
 # LABEL_IMAGE_PATH = "./images/case_02/GT.png"
 # WEIGHTS_FILE_PATH = "./weights/Boxhill.model.weights.pt"
 
-INPUT_IMAGE_PATH = "./images/case_03/RGB.png"
-LABEL_IMAGE_PATH = "./images/case_03/GT.png"
-WEIGHTS_FILE_PATH = "./weights/CapeTown.model.weights.pt"
+# INPUT_IMAGE_PATH = "./images/case_03/RGB.png"
+# LABEL_IMAGE_PATH = "./images/case_03/GT.png"
+# WEIGHTS_FILE_PATH = "./weights/CapeTown.model.weights.pt"
 
 
 @enum.unique
@@ -62,6 +61,7 @@ class Stats:
         plt.ylim(ymin=0, ymax=int(math.ceil(np.max(self.__losses))))
         plt.savefig(fpath)
         plt.close()
+        print("(ii) Loss plot saved at {}".format(fpath))
         np.save(fpath + ".npy", self.__losses)
 
     def fmt_dict(self):
@@ -72,11 +72,9 @@ def device(use_gpu=True):
 
     if use_gpu and torch.cuda.is_available():
         return torch.device("cuda")
-
-    if not use_gpu:
-        # TODO: Warn that GPU is not available and we're using CPU
-        print("You are running on a CPU-only machine.")
-    return torch.device("cpu")
+    else:
+        print("GPU is not available and we're using CPU")
+        return torch.device("cpu")
 
 
 def x_dtype():
@@ -87,34 +85,30 @@ def y_dtype():
     return torch.long
 
 
-def input_image():
-    return Image.open(INPUT_IMAGE_PATH)
+def input_image(input_image_path):
+    return Image.open(input_image_path)
 
 
-def label_image():
-    return Image.open(LABEL_IMAGE_PATH)
+def label_image(input_label_image_path):
+    return Image.open(input_label_image_path)
 
 
-def save_weights_to_disk(model):
-    path = WEIGHTS_FILE_PATH
+def save_weights_to_disk(model, path):
     weights = model.state_dict()
     torch.save(weights, path)
     return path
 
 
-def save_entire_model(model):
-    path = WEIGHTS_FILE_PATH
+def save_entire_model(model, path):
     torch.save(model, path)
+    print("(i) Model saved at {}".format(path))
     return path
 
 
-def load_weights_from_disk(model):
-    path = WEIGHTS_FILE_PATH
+def load_weights_from_disk(model, path):
     if torch.cuda.is_available():
-
         def map_location(storage, loc):
             return storage.cuda()
-
     else:
         map_location = "cpu"
     weights = torch.load(path, map_location=map_location)
@@ -122,13 +116,10 @@ def load_weights_from_disk(model):
     return model
 
 
-def load_entire_model(model, use_gpu=False):
-    path = WEIGHTS_FILE_PATH
+def load_entire_model(model, path, use_gpu=False):
     if torch.cuda.is_available() and use_gpu:
-
         def map_location(storage, loc):
             return storage.cuda()
-
     else:
         map_location = "cpu"
     model = torch.load(path, map_location=map_location)
@@ -210,7 +201,7 @@ def overlay_class_prediction(image, prediction, color=(255, 0, 0)):  # color in 
     for n in range(N):
         (x, y) = next(tiles)
         tile = prediction[n, :, :]
-        mask[y : y + H, x : x + W] = tile * 255
+        mask[y: y + H, x: x + W] = tile * 255
 
     color_image = Image.new("RGB", extended_size, color=color)
     mask_image = Image.fromarray(mask.astype("uint8"), mode="L")

@@ -12,14 +12,13 @@ import torch
 import numpy as np
 from PIL import Image
 
+import utils
 import torch.utils.data
 
-import utils
 
+def full_image_loader(image_path, label_path, tile_size):
 
-def full_image_loader(tile_size):
-
-    dataset = tile_dataset(tile_size=tile_size)
+    dataset = tile_dataset(image_path, label_path, tile_size=tile_size)
 
     loader = torch.utils.data.DataLoader(
         dataset, batch_size=1, shuffle=False, num_workers=1
@@ -28,29 +27,31 @@ def full_image_loader(tile_size):
     return loader
 
 
-def training_loader(batch_size, tile_size, shuffle=False):
+def training_loader(image_path, label_path, batch_size, tile_size, shuffle=False):
 
     tile_stride_ratio = 0.5
 
-    dataset = tile_dataset(tile_size, tile_stride_ratio=tile_stride_ratio)
+    dataset = tile_dataset(image_path, label_path, tile_size,
+                           tile_stride_ratio=tile_stride_ratio)
 
     loader = torch.utils.data.DataLoader(
         dataset,
         batch_size=batch_size,
         shuffle=shuffle,
         num_workers=4,  # default is 1, use 4 to compare the performance.
-        pin_memory=True,  # use memory pining to enable fast data transfer to CUDA-enabled GPU.
+        # use memory pining to enable fast data transfer to CUDA-enabled GPU.
+        pin_memory=True,
     )
 
     return loader
 
 
-def tile_dataset(tile_size, tile_stride_ratio=1.0):
+def tile_dataset(image_path, label_path, tile_size, tile_stride_ratio=1.0):
 
     # TODO: Perform data augmentation in this
 
-    x_image = utils.input_image().convert("RGB")
-    y_image = utils.label_image().convert("1")
+    x_image = utils.input_image(image_path).convert("RGB")
+    y_image = utils.label_image(label_path).convert("1")
 
     assert x_image.size == y_image.size
 
@@ -86,8 +87,8 @@ def tile_dataset(tile_size, tile_stride_ratio=1.0):
 
     # Clip tiles accumulators to the actual number of tiles
     # Since some tiles might have been discarded, n <= tile_count
-    x_tiles = torch.from_numpy(x_tiles[0 : n + 1, :, :, :])
-    y_tiles = torch.from_numpy(y_tiles[0 : n + 1, :, :])
+    x_tiles = torch.from_numpy(x_tiles[0: n + 1, :, :, :])
+    y_tiles = torch.from_numpy(y_tiles[0: n + 1, :, :])
     # x_tiles = torch.from_numpy(x_tiles)
     # y_tiles = torch.from_numpy(y_tiles)
     x_tiles = x_tiles.to(dtype=utils.x_dtype())
