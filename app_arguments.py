@@ -11,17 +11,17 @@ def app_argparse():
 
     # Adding arguments
     # positional arguments:
-    parser.add_argument('--input_RGB',   type=str, default="images/case_03/RGB.png",
+    parser.add_argument('--input_RGB',  metavar='Input RGB Images:', type=str, default="images/case_03/RGB.png",
                         help='string of RGB image file path')
 
     parser.add_argument('--input_GT',   type=str, default="images/case_03/GT.png",
                         help='string of Ground Truce (GT image file path')
 
     parser.add_argument('--output_model_path', type=str, default="weights/CapeTown.model.weights.pt",
-                        help='string of Ground Truce (GT image file path')
+                        help='')
 
     parser.add_argument('--output_loss_plot',  type=str, default="output/loss_plot.png",
-                        help='string of Ground Truce (GT image file path')
+                        help='')
 
     parser.add_argument('--output_images',  type=str, default="output/",
                         help='string of output image file path')
@@ -32,10 +32,10 @@ def app_argparse():
 
     # flags
     parser.add_argument('--use_gpu', default=False,
-                        help='use GPU(default: True)')
+                        help='Use GPU in Traning the Model (default: False)')
 
-    parser.add_argument('--use_pretrain',  default=False,
-                        help='use pretrained model')
+    parser.add_argument('--use_pretrain',  default=True,
+                        help='Use Pre-Trained ConvNets in Traning the Model (default: True)')
 
     # hyper-parameters
 

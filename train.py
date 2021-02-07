@@ -20,6 +20,10 @@ from torch.utils.tensorboard import SummaryWriter
 from app_arguments import app_argparse
 
 
+import io
+from contextlib import redirect_stderr
+
+
 def train(
     model,
     train_loader,
@@ -52,24 +56,30 @@ def train(
     criterion = criterion.to(device=device)
     training_stats = utils.Stats()
     running_loss = 0.0
+
     for n in range(epochs):
         epoch_stats = utils.Stats()
-
         loader_with_progress = utils.loader_with_progress(
             train_loader, epoch_n=n, epoch_total=epochs, stats=epoch_stats, leave=True
         )
-        for i, (x, y) in enumerate(loader_with_progress):
-            y = y.to(device=device)
-            x = x.to(device=device)
-            y_pred = model(x)
-            loss = criterion(y_pred, y)
-            epoch_stats.append_loss(loss.item())
-            training_stats.append_loss(loss.item())
-            loader_with_progress.set_postfix(epoch_stats.fmt_dict())
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            running_loss += loss.item()
+        progress_bar_output = io.StringIO()
+        with redirect_stderr(progress_bar_output):
+            for i, (x, y) in enumerate(loader_with_progress):
+                # for x, y in loader_with_progress:
+                y = y.to(device=device)
+                x = x.to(device=device)
+                y_pred = model(x)
+                loss = criterion(y_pred, y)
+                epoch_stats.append_loss(loss.item())
+                training_stats.append_loss(loss.item())
+
+                loader_with_progress.set_postfix(epoch_stats.fmt_dict())
+                print(flush=True)
+
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+                running_loss += loss.item()
 
         writer.add_scalar(
             "training loss", running_loss /

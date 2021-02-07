@@ -14,6 +14,9 @@ import tqdm
 import numpy as np
 from PIL import Image
 
+import sys
+import io
+
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -138,7 +141,9 @@ def loader_with_progress(
         desc = None
 
     return tqdm.tqdm(
-        iterable=loader, desc=desc, leave=leave, dynamic_ncols=True, postfix=stats
+        iterable=loader, desc=desc, leave=leave,
+        dynamic_ncols=True, postfix=stats,
+        file=sys.stdout
     )
 
 
