@@ -138,3 +138,5 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 runs/
+GUI_DL_AIM-args.json
+.app_arguments.py.swp

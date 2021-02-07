@@ -6,6 +6,7 @@ Authoer: Chris Cui
 
 Time: 2021-Jan-20
 """
+import sys
 import time
 import torch
 import utils
@@ -75,6 +76,7 @@ def train(
 
                 loader_with_progress.set_postfix(epoch_stats.fmt_dict())
                 print(flush=True)
+                # sys.stdout.flush()
 
                 optimizer.zero_grad()
                 loss.backward()
