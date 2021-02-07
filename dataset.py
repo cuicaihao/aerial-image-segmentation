@@ -53,7 +53,7 @@ def tile_dataset(image_path, label_path, tile_size, tile_stride_ratio=1.0):
     x_image = utils.input_image(image_path).convert("RGB")
     y_image = utils.label_image(label_path).convert("1")
 
-    assert x_image.size == y_image.size
+    # assert x_image.size == y_image.size
 
     tile_stride = (
         int(tile_size[0] * tile_stride_ratio),

@@ -83,6 +83,7 @@ def train(
             time_elapsed // 60, time_elapsed % 60
         )
     )
+
     # print('Best val Acc: {:4f}'.format(best_acc))
     return model, training_stats
 
@@ -102,19 +103,19 @@ if __name__ == "__main__":
     WEIGHTS_FILE_PATH = args.output_model_path
     LOSS_PLOT_PATH = args.output_loss_plot
 
-    epochs = args.epochs
-    batch_size = args.batch_size
     use_gpu = args.use_gpu
     use_pretrain = args.use_pretrain
-    device = utils.device(use_gpu=use_gpu)
+
+    epochs = args.epochs
+    batch_size = args.batch_size
     tile_size = args.tile_size
     learning_rate = args.learning_rate
     weight_decay = args.weight_decay
 
+    # Step 02: load the pretrained model
+    device = utils.device(use_gpu=use_gpu)
     # init model structure
     model = FCNN()
-
-    # load the pretrained model
     # model = utils.load_weights_from_disk(model)
     if use_pretrain:
         model = utils.load_entire_model(model, WEIGHTS_FILE_PATH, use_gpu)
@@ -139,7 +140,7 @@ if __name__ == "__main__":
     )
 
     # comment the following section to compare the results with 4 workers and pin_memory in dataloader.
-    # # save the model
+    # Step 03: save the model
     # model_path = utils.save_weights_to_disk(model)
     model_path = utils.save_entire_model(model, WEIGHTS_FILE_PATH)
 

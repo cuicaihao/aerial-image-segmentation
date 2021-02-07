@@ -1,4 +1,3 @@
-from torch.utils.tensorboard import SummaryWriter
 
 
 import torch
@@ -7,48 +6,20 @@ import dataset
 from model import FCNN
 from utils import ClassLabel
 from torchsummary import summary
+from torch.utils.tensorboard import SummaryWriter
 
 
 # imports
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
-import torch
 import torchvision
 import torchvision.transforms as transforms
 
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-
-
-def predict(model, data_loader, device, class_label):
-    # call model.eval() to set dropout and batch normalization layers to evaluation mode before running inference.
-    model.eval()
-    # Tile accumulator
-    # y_full = torch.Tensor().cpu()
-    y_full = torch.Tensor().cpu()
-
-    # for i, (x, y) in enumerate(data_loader):
-    for x, y in data_loader:
-        x = x.to(device=device)
-
-        with torch.no_grad():
-
-            y_pred = model(x)
-            y_pred = y_pred.to(device=y_full.device)
-
-            # Stack tiles along dim=0
-            y_full = torch.cat((y_full, y_pred), dim=0)
-        # print(i)
-    if class_label == ClassLabel.background:
-        return torch.max(y_full, dim=1)[1]
-
-    if class_label == ClassLabel.house:
-        return torch.max(-y_full, dim=1)[1]
-
-    # TODO: Subclass error
-    raise ValueError("Unknown class label: {}".format(class_label))
+from app_arguments import app_argparse
 
 
 def matplotlib_imshow(img, one_channel=False):
@@ -64,39 +35,56 @@ def matplotlib_imshow(img, one_channel=False):
 
 if __name__ == "__main__":
 
+    parser = app_argparse()
+    args = parser.parse_args()
+    print(args)
+
+    use_gpu = args.use_gpu
+    INPUT_IMAGE_PATH = args.input_RGB
+    LABEL_IMAGE_PATH = args.input_GT
+    WEIGHTS_FILE_PATH = args.output_model_path
+
     # Step 1: TensorBoard setup
     # default `log_dir` is "runs" - we'll be more specific here
     writer = SummaryWriter("runs/aerial_image_segmentation")
-
     # Step 2: Writing to TensorBoard
-
     # get some random training images
     tile_size = (250, 250)
-    loader = dataset.full_image_loader(tile_size=tile_size)
+    loader = dataset.full_image_loader(
+        INPUT_IMAGE_PATH, LABEL_IMAGE_PATH, tile_size=tile_size)
     # dataiter = iter(loader)
     # images, labels = dataiter.next()
-    images = torch.tensor(np.zeros((16, 3, 250, 250)))
+
+    images_RGB = torch.tensor(np.zeros((16, 3, 250, 250)))
+    images_GT = torch.tensor(np.zeros((16, 1, 250, 250)))
+
     i = 0
     for x, y in loader:
         # print(x.shape, y.shape)
-        images[i, :, :, :] = x
+        images_RGB[i, :, :, :] = x
+        images_GT[i, :, :, :] = y
         i = i + 1
 
     # # create grid of images
-    img_grid = torchvision.utils.make_grid(images, 4)
+    img_grid_RGB = torchvision.utils.make_grid(images_RGB, 4)
+    writer.add_image("aerial_images_samples_RGB", img_grid_RGB, 1)
+
+    img_grid_GT = torchvision.utils.make_grid(images_GT, 4)
+    writer.add_image("aerial_images_samples_GT", img_grid_GT, 1)
 
     # # show images
-    # matplotlib_imshow(img_grid, one_channel=True)
-
-    # # write to tensorboard
-    writer.add_image("aerial_images_samples", img_grid, 1)
+    # matplotlib_imshow(img_grid_RGB, one_channel=True)
+    # matplotlib_imshow(img_grid_GT, one_channel=True)
 
     # 3. Inspect the model using TensorBoard
-    use_gpu = False
     device = utils.device(use_gpu=use_gpu)
     model = FCNN()
     # model = utils.load_weights_from_disk(model)
-    model = utils.load_entire_model(model, use_gpu)
+    model = utils.load_entire_model(model, WEIGHTS_FILE_PATH, use_gpu)
 
     writer.add_graph(model, x)
     writer.close()
+
+
+## Action: visualization
+# tensorboard --logdir=runs

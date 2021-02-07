@@ -23,6 +23,9 @@ def app_argparse():
     parser.add_argument('--output_loss_plot',  type=str, default="output/loss_plot.png",
                         help='string of Ground Truce (GT image file path')
 
+    parser.add_argument('--output_images',  type=str, default="output/",
+                        help='string of output image file path')
+
     # optional arguments:
     parser.add_argument('--version', '-v', action='version',
                         version='%(prog)s 1.0.0')
