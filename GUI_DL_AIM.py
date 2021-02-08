@@ -3,6 +3,11 @@ A simple Gooey example. One required field, one optional.
 '''
 
 from __future__ import print_function
+from matplotlib import style
+from predict import predict
+from train import train
+from gooey import Gooey, GooeyParser
+from argparse import ArgumentParser
 import os
 import sys
 import json
@@ -17,24 +22,28 @@ from datetime import datetime
 from datetime import date
 from torch.utils.tensorboard import SummaryWriter
 
+
+import cv2 as cv
+from matplotlib import pyplot as plt
+
+import matplotlib
+matplotlib.use('tkagg')
+style.use("ggplot")
+
+
 # %% GUI Design
-from argparse import ArgumentParser
-from gooey import Gooey, GooeyParser
 
 # add tran function
-from train import train
 
 
 @Gooey(program_name="Deep Learning Aerial Image Labelling",
-       default_size=(600, 666),
+       default_size=(640, 680),
        advanced=True,
+       #    progress_regex=r"^(Epoch ((\d+)\/(\d+)))(.*)]$",  # not working
        progress_regex=r"(\d+)%",
        tabbed_groups=True,
        navigation='Tabbed',
-
        #    hide_progress_msg=False,
-       #    progress_regex=r"^progress: (?P<current>\d+)/(?P<total>\d+)$",
-       #    progress_expr="current / total * 100",
        #    timing_options={
        #        'show_time_remaining': True,
        #        'hide_time_remaining_on_complete': True},
@@ -262,28 +271,87 @@ def dev_model(args):  # modified from __main__ in train.py
     print('[>>>] Passed!')
 
 
+def dev_predit(args):
+    use_gpu = args.use_gpu
+    tile_size = tile_size = (args.tile_size_height, args.tile_size_width)
+    INPUT_IMAGE_PATH = args.input_RGB
+    LABEL_IMAGE_PATH = args.input_GT
+    WEIGHTS_FILE_PATH = args.output_model_path
+    LOSS_PLOT_PATH = args.output_loss_plot
+    OUTPUT_IMAGE_PATH = args.output_images
+
+    # Step 02: Get Input Resources and Model Configuration
+    device = utils.device(use_gpu=use_gpu)
+    model = FCNN()
+    # model = utils.load_weights_from_disk(model)
+    model = utils.load_entire_model(model, WEIGHTS_FILE_PATH, use_gpu)
+    # print(model)
+    # summary(model, (3, tile_size[0], tile_size[1]))
+    # this is issue !!!
+    loader = dataset.full_image_loader(
+        INPUT_IMAGE_PATH, LABEL_IMAGE_PATH, tile_size=tile_size)
+
+    prediction = predict(model, loader, device=device,
+                         class_label=utils.ClassLabel.house)
+
+    # Step 03: save the output
+    input_image = utils.input_image(INPUT_IMAGE_PATH)
+    pred_image, mask_image = utils.overlay_class_prediction(
+        input_image, prediction)
+
+    pred_image_path = OUTPUT_IMAGE_PATH + "prediction.png"
+    pred_image.save(pred_image_path)
+
+    pred_mask_path = OUTPUT_IMAGE_PATH + "mask.png"
+    mask_image.save(pred_mask_path)
+
+    print("(i) Prediction and Mask image saved at {}".format(pred_image_path))
+    print("(ii) Prediction and Mask image saved at {}".format(pred_mask_path))
+
+    # show images
+    img_rgb = cv.imread(INPUT_IMAGE_PATH)
+    img_gt = cv.imread(LABEL_IMAGE_PATH)
+    img_pred = cv.imread(pred_mask_path)  # pred_image_path
+    img_lost = cv.imread(LOSS_PLOT_PATH)
+
+    images = [img_rgb, img_gt, img_pred, img_lost]
+    titles = ['RGB', 'GT', 'Prediction', 'Training Loss']
+    plt.figure(num=None, figsize=(20, 5), dpi=80, facecolor='w', edgecolor='k')
+    for i in range(4):
+        plt.subplot(1, 4, i+1), plt.imshow(images[i], 'gray', vmin=0, vmax=255)
+        plt.title(titles[i])
+        plt.xticks([]), plt.yticks([])
+
+    plt.show()
+
+    return pred_image_path, pred_mask_path
+
+
 def main():
     conf = parse_args()
-    for arg in vars(conf):
-        print('{}:{}'.format(arg, getattr(conf, arg)))
-    # train model
-    dev_model(conf)  # comment this line for GUI Design
-
-
-if __name__ == '__main__':
     print("="*40)
     now = datetime.now()
     start_time = now.strftime("%Y/%m/%d %H:%M:%S")
     print(f"model start: {start_time}")
     print("="*40)
+    for arg in vars(conf):
+        print('{}:{}'.format(arg, getattr(conf, arg)))
 
-    main()
+    # train model
+    dev_model(conf)  # comment this line for GUI Design
+
+    # get training output
+    dev_predit(conf)
 
     print("="*40)
     now = datetime.now()
     end_time = now.strftime("%Y/%m/%d %H:%M:%S")
     print(f"model start: {start_time} end: {end_time}.")
     print("="*40)
+
+
+if __name__ == '__main__':
+    main()
     print("\r"*3)
 
 
