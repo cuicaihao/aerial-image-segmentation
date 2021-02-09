@@ -122,7 +122,8 @@ def parse_args():
         type=str,
         metavar="Input RGB Image",
         action="store",
-        default="images/case_03/RGB.png",
+        # default="images/case_03/RGB.png",
+        default=stored_args.get('input_RGB'),
         help="string of RGB image file path",
         widget="FileChooser",
     )
@@ -133,7 +134,8 @@ def parse_args():
         metavar="Input Ground True Image",
         action="store",
         widget="FileChooser",
-        default="images/case_03/GT.png",
+        # default="images/case_03/GT.png",
+        default=stored_args.get('input_GT'),
         help="string of Ground Truce (GT image file path",
     )
 
@@ -141,7 +143,8 @@ def parse_args():
         "output_model_path",
         type=str,
         metavar="Output/Reload Model File",
-        default="weights/CapeTown.model.weights.pt",
+        # default="weights/CapeTown.model.weights.pt",
+        default=stored_args.get('output_model_path'),
         help="saved file path",
         widget="FileChooser",
     )
@@ -149,7 +152,8 @@ def parse_args():
         "output_loss_plot",
         metavar="Output Dev History Plot",
         type=str,
-        default="output/loss_plot.png",
+        # default="output/loss_plot.png",
+        default=stored_args.get('output_loss_plot'),
         help="save the training error curves",
         widget="FileChooser",
     )
@@ -158,7 +162,8 @@ def parse_args():
         "output_images",
         metavar="Output Image Folder",
         type=str,
-        default="output/",
+        # default="output/",
+        default=stored_args.get('output_images'),
         help="string of output image file path",
         widget="DirChooser",
     )
@@ -236,8 +241,9 @@ def parse_args():
         default=1,
         type=int,
         help="epoch number: positive integer",
-        choices=[1, 2, 200, 400, 800, 1600],
-        widget="Dropdown",
+        # choices=[1, 2, 5, 200, 400, 800, 1600],
+        # widget="Dropdown",
+        widget="IntegerField",
     )
 
     config_group.add_argument(
@@ -246,9 +252,9 @@ def parse_args():
         default=4,
         type=int,
         help="batch size (?, 3, W, H)",
-        #  choices=[1, 2, 4, 8, 16, 32, 64],
-        #  widget='Dropdown'
-        widget="IntegerField",
+        choices=[1, 2, 4, 8, 16, 32, 64],
+        widget='Dropdown'
+        # widget="IntegerField",
     )
 
     config_group.add_argument(
@@ -370,7 +376,8 @@ def dev_predit(args):
 
     # Step 03: save the output
     input_image = utils.input_image(INPUT_IMAGE_PATH)
-    pred_image, mask_image = utils.overlay_class_prediction(input_image, prediction)
+    pred_image, mask_image = utils.overlay_class_prediction(
+        input_image, prediction)
 
     pred_image_path = OUTPUT_IMAGE_PATH + "prediction.png"
     pred_image.save(pred_image_path)
@@ -391,13 +398,20 @@ def dev_predit(args):
     titles = ["RGB", "GT", "Prediction", "Training Loss"]
     plt.figure(num=None, figsize=(20, 5), dpi=80, facecolor="w", edgecolor="k")
     for i in range(4):
-        plt.subplot(1, 4, i + 1), plt.imshow(images[i], "gray", vmin=0, vmax=255)
+        plt.subplot(
+            1, 4, i + 1), plt.imshow(images[i], "gray", vmin=0, vmax=255)
         plt.title(titles[i])
         plt.xticks([]), plt.yticks([])
 
     plt.show()
 
     return pred_image_path, pred_mask_path
+
+
+def config_checking(conf):
+    if conf.epochs < 0:
+        return False
+    return True
 
 
 def main():
@@ -410,12 +424,16 @@ def main():
     for arg in vars(conf):
         print("{}:{}".format(arg, getattr(conf, arg)))
 
-    # train model
-    dev_model(conf)  # comment this line for GUI Design
-
-    # get training output
-    dev_predit(conf)
-
+    # config checking!
+    if config_checking(conf):
+        # train model
+        if conf.epochs > 0:
+            dev_model(conf)  # comment this line for GUI Design
+        else:
+            # get training output
+            dev_predit(conf)
+    else:
+        print("Wrong Option")
     print("=" * 40)
     now = datetime.now()
     end_time = now.strftime("%Y/%m/%d %H:%M:%S")
