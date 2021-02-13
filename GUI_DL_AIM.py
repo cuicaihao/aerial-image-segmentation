@@ -4,7 +4,11 @@ A simple Gooey example. One required field, one optional.
 
 from __future__ import print_function
 from matplotlib import style
+
 from predict import predict
+from predict import metricComputation
+
+
 from train import train
 from gooey import Gooey, GooeyParser
 from argparse import ArgumentParser
@@ -21,9 +25,10 @@ from loss import CrossEntropyLoss2d
 from datetime import datetime
 from datetime import date
 from torch.utils.tensorboard import SummaryWriter
-
+import numpy as np
 
 import cv2 as cv
+from PIL import Image
 from matplotlib import pyplot as plt
 
 import matplotlib
@@ -388,6 +393,13 @@ def dev_predit(args):
     print("(i) Prediction and Mask image saved at {}".format(pred_image_path))
     print("(ii) Prediction and Mask image saved at {}".format(pred_mask_path))
 
+    # Show Metrics Computation
+    img_gt = np.array(Image.open(LABEL_IMAGE_PATH), dtype=np.int32)
+    img_gt = 255 - img_gt
+    img_mask = np.array(Image.open(pred_mask_path), dtype=np.int32)
+
+    metricComputation(img_gt, img_mask)
+
     # show images
     img_rgb = cv.imread(INPUT_IMAGE_PATH)
     img_gt = cv.imread(LABEL_IMAGE_PATH)
@@ -428,7 +440,8 @@ def main():
     if config_checking(conf):
         # train model
         if conf.epochs > 0:
-            dev_model(conf)  # comment this line for GUI Design
+            dev_model(conf)   # comment this line for GUI Design
+            dev_predit(conf)  # train and predict
         else:
             # get training output
             dev_predit(conf)

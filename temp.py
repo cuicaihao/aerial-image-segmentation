@@ -1,8 +1,89 @@
-from matplotlib import pyplot as plt
+# %% load packages
 import sys
 import cv2 as cv
 import subprocess
 import os
+
+from PIL import Image
+import numpy as np
+
+from matplotlib import pyplot as plt
+
+import matplotlib
+# matplotlib.use('tkagg')
+
+# %%  Read images
+img_gt = np.array(Image.open("images/case_03/GT.png"), dtype=np.int32)
+img_gt = 255 - img_gt
+img_mask = np.array(Image.open("output/mask.png"), dtype=np.int32)
+images = [img_gt, img_mask]
+
+# %%  show images
+titles = ['GT',  'MASK']
+for i in range(2):
+    plt.subplot(1, 2, i+1), plt.imshow(images[i], 'gray', vmin=0, vmax=255)
+    # plt.subplot(1, 2, i+1), plt.imshow(images[i])
+    plt.title(titles[i])
+    plt.xticks([]), plt.yticks([])
+
+plt.show()
+
+# %%  call dice and iou metrics_np
+A = img_gt.copy()
+B = img_mask.copy()
+
+
+# %%
+
+def metricComputation(A, B):
+    A = A.astype(np.float32)
+    B = B.astype(np.float32)
+
+    # Evaluate TP, TN, FP, FN
+    SumAB = A + B
+    minValue = np.min(SumAB)
+    maxValue = np.max(SumAB)
+
+    TP = len(SumAB[np.where(SumAB == maxValue)])
+    TN = len(SumAB[np.where(SumAB == minValue)])
+
+    SubAB = A - B
+    minValue = np.min(SubAB)
+    maxValue = np.max(SubAB)
+    FP = len(SubAB[np.where(SubAB == minValue)])
+    FN = len(SubAB[np.where(SubAB == maxValue)])
+
+    Accuracy = (TP+TN)/(FN+FP+TP+TN)
+    Precision = TP/(TP+FP)
+    Sensitivity = TP/(TP+FN)
+    Specificity = TN/(TN+FP)
+    Fmeasure = 2*TP/(2*TP+FP+FN)
+
+    MCC = (TP*TN-FP*FN)/np.sqrt(float((TP+FP)*(TP+FN)*(TN+FP)*(TN+FN)))
+    Dice = 2*TP/(2*TP+FP+FN)
+    Jaccard = Dice/(2-Dice)
+
+    scores = {}
+    scores["Accuracy"] = Accuracy
+    scores["Sensitivity"] = Sensitivity
+    scores["Precision"] = Precision
+    scores["Specificity"] = Specificity
+    scores["Fmeasure"] = Fmeasure
+    scores["MCC"] = MCC
+    scores["Dice"] = Dice
+    scores["Jaccard"] = Jaccard
+    for k, v in scores.items():
+        print(f"{k} : {v}")
+    return scores
+
+
+# %% GUI
+scores = metricComputation(img_gt, img_mask)
+print(f"Metric Results: {scores}")
+
+for k, v in scores.items():
+    print(f"{k} : {v}")
+# %% plot
 
 # input_RGB:images/case_03/RGB.png
 # input_GT:images/case_03/GT.png
@@ -26,20 +107,20 @@ import os
 # Traceback (most recent call last):
 
 
-img_rgb = cv.imread("images/case_03/RGB.png")
-img_gt = cv.imread("images/case_03/GT.png")
-img_pred = cv.imread("output/prediction.png")
-img_lost = cv.imread("output/loss_plot.png")
+# img_rgb = cv.imread("images/case_03/RGB.png")
+# img_gt = cv.imread("images/case_03/GT.png")
+# img_pred = cv.imread("output/prediction.png")
+# img_lost = cv.imread("output/loss_plot.png")
 
-images = [img_rgb, img_gt, img_pred, img_lost]
+# images = [img_rgb, img_gt, img_pred, img_lost]
 
-titles = ['RGB', 'GT', 'Prediction', 'Training Loss']
-for i in range(4):
-    plt.subplot(1, 4, i+1), plt.imshow(images[i], 'gray', vmin=0, vmax=255)
-    plt.title(titles[i])
-    plt.xticks([]), plt.yticks([])
+# titles = ['RGB', 'GT', 'Prediction', 'Training Loss']
+# for i in range(4):
+#     plt.subplot(1, 4, i+1), plt.imshow(images[i], 'gray', vmin=0, vmax=255)
+#     plt.title(titles[i])
+#     plt.xticks([]), plt.yticks([])
 
-plt.show()
+# plt.show()
 
 # tensorboard --logdir=runs
 # subprocess.run(["tensorboard", "--logdir=runs"])
@@ -105,3 +186,5 @@ plt.show()
 
 # if __name__ == "__main__":
 #     main()
+
+# %%
