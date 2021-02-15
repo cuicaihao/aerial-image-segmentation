@@ -11,17 +11,12 @@ from predict import metricComputation
 
 from train import train
 from gooey import Gooey, GooeyParser
-from argparse import ArgumentParser
 import os
-import sys
 import json
-import time
 
-import torch
 import utils
 import dataset
 from model import FCNN
-from loss import CrossEntropyLoss2d
 from datetime import datetime
 from datetime import date
 from torch.utils.tensorboard import SummaryWriter
@@ -408,10 +403,10 @@ def dev_predit(args):
 
     images = [img_rgb, img_gt, img_pred, img_lost]
     titles = ["RGB", "GT", "Prediction", "Training Loss"]
-    plt.figure(num=None, figsize=(20, 5), dpi=80, facecolor="w", edgecolor="k")
+    plt.figure(num=None, figsize=(7, 7), dpi=80, facecolor="w", edgecolor="k")
     for i in range(4):
         plt.subplot(
-            1, 4, i + 1), plt.imshow(images[i], "gray", vmin=0, vmax=255)
+            2, 2, i + 1), plt.imshow(images[i], "gray", vmin=0, vmax=255)
         plt.title(titles[i])
         plt.xticks([]), plt.yticks([])
 

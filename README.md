@@ -1,10 +1,11 @@
-# Aerial Image Segmentation with PyTorch (2021-Jan)
+# Aerial Image Segmentation with PyTorch
 
+(Updated on 2021)
 This repository is based on the original [repository (2018)](https://github.com/romanroibu/aerial-image-segmentation) by Roman Roibu. Improvements and Changes have been made due to the rapid development in deep learning community.
 
 The UNet leads to more advanced design in Aerial Image Segmentation. Future updates will gradually apply those method into this repository.
 
-![Google Photo](./images/test/GoogleEarth_xxx.png)
+<img src="./images/test/GoogleEarth_xxx.png" alt ="Google Photo"  height="250" />
 
 ### Prerequisites
 
@@ -14,8 +15,7 @@ The UNet leads to more advanced design in Aerial Image Segmentation. Future upda
 ### Setup
 
 Create a new virtual environment to install the required libraries, use 'conda' or 'pyenv'
-
-### Python Packages
+with the following Python Packages:
 
 - numpy==1.19.2
 - matplotlib==3.3.2
@@ -24,6 +24,29 @@ Create a new virtual environment to install the required libraries, use 'conda' 
 - torchsummary==1.5.1
 - torchvision==0.8.2
 - tqdm==4.51.0
+- opencv-python==4.5.1
+
+## Deep Learning for Aerial Image Segmentation GUI
+
+You can start the App with GUI with the following command:
+
+```python
+python GUI_DL_AIM.py
+# or pythonw GUI_DL_AIM.py # on MacOS
+```
+
+The GUI is design with respect to the original python `argparse` setting with Gooey Packages.
+
+- Data IO: input and output file and paths.
+- Model Options: Time, Date, GPU, Pretrained model, Epochs, Batch Size, Learning Rate, Regularization.
+- Cancle/ Start Button to Execute the program.
+
+<img src="./images/GUI_01.png" alt ="GUI01"  height="250" />
+<img src="./images/GUI_02.png" alt ="GUI02"  height="250" />
+<img src="./images/GUI_03.png" alt ="GUI03"  height="250" />
+<img src="./images/GUI_04.png" alt ="GUI04"  height="250" />
+
+Notification: When Epochs Number is 0, it will load the pretrained model to predict the masks only without training.
 
 ### Suggestion: Use GPU and CUDA 11
 
@@ -47,10 +70,45 @@ Epoch  4/20:  50%|██████████         | 4/8 [00:25<00:25,  6.
 
 ** It is fair to say GPU is at least 10 times faster than the CPU.**
 
-## Train (Deep) ConvNets - U-Nets
+## Train (Deep) ConvNets - U-Nets with new data
 
-```
+```bash
 $ python train.py
+```
+
+or add arguments for different model inference configurations.
+
+```bash
+$ python train.py -h
+
+usage: AIL: Aerial Image Labelling [options]
+
+Aerial Image Labelling with Deep Learning.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --input_RGB Input RGB Images:
+                        string of RGB image file path
+  --input_GT INPUT_GT   string of Ground Truce (GT image file path
+  --output_model_path OUTPUT_MODEL_PATH
+  --output_loss_plot OUTPUT_LOSS_PLOT
+  --output_images OUTPUT_IMAGES
+                        string of output image file path
+  --version, -v         show program's version number and exit
+  --use_gpu USE_GPU     Use GPU in Traning the Model (default: False)
+  --use_pretrain USE_PRETRAIN
+                        Use Pre-Trained ConvNets in Traning the Model (default: True)
+  --tile_size TILE_SIZE TILE_SIZE
+                        input tile size
+  --epochs EPOCHS       epoch number
+  --batch_size BATCH_SIZE
+                        batch size (?, channel, width, height)
+  --learning_rate LEARNING_RATE
+                        model training learning rate
+  --weight_decay WEIGHT_DECAY
+                        model weight decay / l2 regularization
+
+And that's how AI can help
 ```
 
 #### Output
@@ -64,14 +122,15 @@ Epoch  3/200: 100%|████████████████████�
 (i) Loss plot saved at ./images/output/loss_plot.png
 ```
 
-![Loss plot](./output/case_3/400%20epochs/loss_plot.png "Loss plot")
+<img src="./output/case_3/400%20epochs/loss_plot.png " alt="Loss plot" height=250/>
 
 ## Predict (Training Validation)
 
 Use the training data as input to test the model.
 
-```
+```bash
 $ python predict.py
+# python predict.py -h
 ```
 
 #### Output
@@ -83,12 +142,11 @@ $ python predict.py
 
 **Prediction with mask**:
 
-![Predicted image](./output/case_3/400%20epochs/prediction.png "Predicted image")
+<img src="./output/case_3/400%20epochs/prediction.png " alt="Predicted" height=250/>
+<img src="./output/case_3/400%20epochs/mask.png " alt="Binary Mask" height=250/>
 
 **Binary with mask**:
 This is an binary mask, you can see there are extra works needed to improve the restuls. The improments can be from the `Deep Learning model` or the `Image Postprocessing method`.
-
-![Predicted image](./output/case_3/400%20epochs/mask.png "Predicted image")
 
 ### Reference
 
