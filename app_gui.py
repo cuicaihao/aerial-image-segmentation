@@ -1,19 +1,29 @@
+#!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+'''
+Created on   :2021/02/18 20:27:53
+@author      :Caihao (Chris) Cui
+@file        :app_gui.py
+@content     :xxx xxx xxx
+@version     :0.1
+@License :   (C)Copyright 2020 MIT
+'''
+
+# here put the import lib
+
 """
 A simple Gooey example. One required field, one optional.
 """
 
+
 from __future__ import print_function
 from matplotlib import style
-
 from predict import predict
 from predict import metricComputation
-
-
 from train import train
 from gooey import Gooey, GooeyParser
 import os
 import json
-
 import utils
 import dataset
 from model import FCNN
@@ -21,13 +31,10 @@ from datetime import datetime
 from datetime import date
 from torch.utils.tensorboard import SummaryWriter
 import numpy as np
-
 import cv2 as cv
 from PIL import Image
 from matplotlib import pyplot as plt
-
 import matplotlib
-
 matplotlib.use("tkagg")
 style.use("ggplot")
 

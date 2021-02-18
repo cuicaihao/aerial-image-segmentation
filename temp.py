@@ -13,7 +13,7 @@ import matplotlib
 # matplotlib.use('tkagg')
 
 # %%  Read images
-img_gt = np.array(Image.open("images/case_03/GT.png"), dtype=np.int32)
+img_gt = np.array(Image.open("images/GT.png"), dtype=np.int32)
 img_gt = 255 - img_gt
 img_mask = np.array(Image.open("output/mask.png"), dtype=np.int32)
 images = [img_gt, img_mask]

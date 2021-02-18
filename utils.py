@@ -76,7 +76,7 @@ def device(use_gpu=True):
     if use_gpu and torch.cuda.is_available():
         return torch.device("cuda")
     else:
-        print("GPU is not available and we're using CPU")
+        print("GPU is not available and using CPU instead.")
         return torch.device("cpu")
 
 

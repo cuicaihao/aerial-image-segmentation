@@ -1,3 +1,16 @@
+#!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+'''
+Created on   :2021/02/18 20:27:46
+@author      :Caihao (Chris) Cui
+@file        :app_arguments.py
+@content     :xxx xxx xxx
+@version     :0.1
+@License :   (C)Copyright 2020 MIT
+'''
+
+# here put the import lib
+
 import argparse
 
 
@@ -11,13 +24,13 @@ def app_argparse():
 
     # Adding arguments
     # positional arguments:
-    parser.add_argument('--input_RGB',  metavar='Input RGB Images:', type=str, default="images/case_03/RGB.png",
+    parser.add_argument('--input_RGB',  metavar='Input RGB Images:', type=str, default="images/RGB.png",
                         help='string of RGB image file path')
 
-    parser.add_argument('--input_GT',   type=str, default="images/case_03/GT.png",
+    parser.add_argument('--input_GT',   type=str, default="images/GT.png",
                         help='string of Ground Truce (GT image file path')
 
-    parser.add_argument('--output_model_path', type=str, default="weights/CapeTown.model.weights.pt",
+    parser.add_argument('--output_model_path', type=str, default="weights/Adam.model.weights.pt",
                         help='')
 
     parser.add_argument('--output_loss_plot',  type=str, default="output/loss_plot.png",

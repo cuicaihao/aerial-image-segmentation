@@ -1,3 +1,16 @@
+#!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+'''
+Created on   :2021/02/18 20:28:15
+@author      :Caihao (Chris) Cui
+@file        :model.py
+@content     :xxx xxx xxx
+@version     :0.1
+@License :   (C)Copyright 2020 MIT
+'''
+
+# here put the import lib
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -15,7 +28,7 @@ class FCNN(nn.Module):
         # https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html?highlight=nn%20conv2d#torch.nn.Conv2d
         nc = num_classes
 
-        ## 1 Layer Features
+        # 1 Layer Features
         # 1x1 filter net-in-net
         self.conv1a = nn.Conv2d(3, 16, (1, 1))
         self.bn1a = nn.BatchNorm2d(16)

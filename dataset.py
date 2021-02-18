@@ -1,16 +1,19 @@
-# -*- utf-8: python -*-
-"""
-Software Design
+#!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+'''
+Created on   :2021/02/18 20:27:59
+@author      :Caihao (Chris) Cui
+@file        :dataset.py
+@content     :xxx xxx xxx
+@version     :0.1
+@License :   (C)Copyright 2020 MIT
+'''
 
-Authoer: Chris Cui
+# here put the import lib
 
-Time: 2019-09-03
-"""
 
-import math
 import torch
 import numpy as np
-from PIL import Image
 
 import utils
 import torch.utils.data

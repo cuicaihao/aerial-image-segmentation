@@ -1,11 +1,15 @@
-# -*- utf-8: python -*-
-"""
-Software Design
+#!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+'''
+Created on   :2021/02/18 20:28:07
+@author      :Caihao (Chris) Cui
+@file        :loss.py
+@content     :xxx xxx xxx
+@version     :0.1
+@License :   (C)Copyright 2020 MIT
+'''
 
-Authoer: Chris Cui
-
-Time: 2019-09-03
-"""
+# here put the import lib
 
 # Source: https://github.com/ycszen/pytorch-segmentation/blob/master/loss.py
 

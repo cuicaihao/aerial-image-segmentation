@@ -1,3 +1,17 @@
+#!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+'''
+Created on   :2021/02/18 20:28:24
+@author      :Caihao (Chris) Cui
+@file        :predict.py
+@content     :xxx xxx xxx
+@version     :0.1
+@License :   (C)Copyright 2020 MIT
+'''
+
+# here put the import lib
+
+
 import numpy as np
 from datetime import datetime
 import torch
@@ -137,8 +151,8 @@ if __name__ == "__main__":
     pred_mask_path = OUTPUT_IMAGE_PATH + "mask.png"
     mask_image.save(pred_mask_path)
 
-    print("(i) Prediction and Mask image saved at {}".format(pred_image_path))
-    print("(ii) Prediction and Mask image saved at {}".format(pred_mask_path))
+    print("(i)    Prediction and Mask image saved at {}".format(pred_image_path))
+    print("(ii)   Mask image saved at {}".format(pred_mask_path))
 
     # Step 04: Check the metrics
 

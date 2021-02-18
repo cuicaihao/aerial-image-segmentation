@@ -1,16 +1,9 @@
-# -*- utf-8: python -*-
-"""
-Software Design
 
-Authoer: Chris Cui
-
-Time: 2021-Jan-20
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
 
-import sys
+
 import time
 import torch
 import utils

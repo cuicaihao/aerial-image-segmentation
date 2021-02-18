@@ -5,7 +5,7 @@ This repository is based on the original [repository (2018)](https://github.com/
 
 The UNet leads to more advanced design in Aerial Image Segmentation. Future updates will gradually apply those method into this repository.
 
-<img src="./images/test/GoogleEarth_xxx.png" alt ="Google Photo"  height="" />
+<img src="./asset/feature_image.png" alt ="GT-Overlay-RGB Photo"  height="" />
 
 ### Prerequisites
 
@@ -41,10 +41,10 @@ The GUI is design with respect to the original python `argparse` setting with Go
 - Model Options: Time, Date, GPU, Pretrained model, Epochs, Batch Size, Learning Rate, Regularization.
 - Cancle/ Start Button to Execute the program.
 
-<img src="./images/GUI_01.png" alt ="GUI01"  height="" />
-<img src="./images/GUI_02.png" alt ="GUI02"  height="" />
-<img src="./images/GUI_03.png" alt ="GUI03"  height="" />
-<img src="./images/GUI_04.png" alt ="GUI04"  height="" />
+<img src="./asset/GUI_01.png" alt ="GUI01"  height="" />
+<img src="./asset/GUI_02.png" alt ="GUI02"  height="" />
+<img src="./asset/GUI_03.png" alt ="GUI03"  height="" />
+<img src="./asset/GUI_04.png" alt ="GUI04"  height="" />
 
 Notification: When Epochs Number is 0, it will load the pretrained model to predict the masks only without training.
 
