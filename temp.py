@@ -12,6 +12,39 @@ from matplotlib import pyplot as plt
 import matplotlib
 # matplotlib.use('tkagg')
 
+
+# 5 epochs
+# [Metric Computation]
+# Accuracy       =>   0.801270
+# Sensitivity    =>   0.811900
+# Precision      =>   0.260489
+# Specificity    =>   0.800349
+# Fmeasure       =>   0.394429
+# MCC            =>   0.383756
+# Dice           =>   0.394429
+# Jaccard        =>   0.245663
+
+# [Metric Computation]
+# Accuracy       =>   0.937253
+# Sensitivity    =>   0.860760
+# Precision      =>   0.570543
+# Specificity    =>   0.943879
+# Fmeasure       =>   0.686229
+# MCC            =>   0.670022
+# Dice           =>   0.686229
+# IoU (Jacard)   =>   0.522335
+
+# 200 epochs
+# [Metric Computation]
+# Accuracy       =>   0.963028
+# Sensitivity    =>   0.686358
+# Precision      =>   0.820489
+# Specificity    =>   0.986993
+# Fmeasure       =>   0.747454
+# MCC            =>   0.731054
+# Dice           =>   0.747454
+# IoU (Jacard)   =>   0.596748
+
 # %%  Read images
 img_gt = np.array(Image.open("images/GT.png"), dtype=np.int32)
 img_gt = 255 - img_gt

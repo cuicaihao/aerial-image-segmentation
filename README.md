@@ -1,9 +1,10 @@
-# Aerial Image Segmentation with PyTorch
+# Aerial Image Segmentation with PyTorch (2021 v1.7.1)
 
-(Updated on 2021)
-This repository is based on the original [repository (2018)](https://github.com/romanroibu/aerial-image-segmentation) by Roman Roibu. Improvements and Changes have been made due to the rapid development in deep learning community.
+Aerial Image Labeling addresses a core topic in remote sensing: the automatic pixelwise labeling of aerial imagery. The UNet leads to more advanced design in Aerial Image Segmentation. Future updates will gradually apply those method into this repository.
 
-The UNet leads to more advanced design in Aerial Image Segmentation. Future updates will gradually apply those method into this repository.
+This repo used only one sample (`kitsap11.tif `) from the public dataset ([Inria Aeril Image Labelling ](https://project.inria.fr/aerialimagelabeling/leaderboard/)) to demonstrate the power of deep learning.
+
+Data processing steps and codes can be find in this [file]("images/image_data.md"). The original sample has been preprocessed into 1000x1000 with 1.5 meter resolution.
 
 <img src="./asset/feature_image.png" alt ="GT-Overlay-RGB Photo"  height="" />
 
@@ -12,7 +13,7 @@ The UNet leads to more advanced design in Aerial Image Segmentation. Future upda
 - [`Anaconda`](https://www.anaconda.com/products/individual): Your data science toolkit.
 - [`mini-conda`](https://docs.conda.io/en/latest/miniconda.html): a free minimal installer for conda. It is a small, bootstrap version of Anaconda that includes only conda,
 
-### Setup
+### Python Package Setup
 
 Create a new virtual environment to install the required libraries, use 'conda' or 'pyenv'
 with the following Python Packages:
@@ -26,14 +27,30 @@ with the following Python Packages:
 - tqdm==4.51.0
 - opencv-python==4.5.1
 
-## Deep Learning for Aerial Image Segmentation GUI
+## Deep Learning for Aerial Image Labelling GUI
 
 You can start the App with GUI with the following command:
 
 ```python
-python GUI_DL_AIM.py
+python app_gui.py
 # or pythonw GUI_DL_AIM.py # on MacOS
 ```
+
+### Step 1: select the image and file paths.
+
+<img src="./asset/GUI_01.png" alt ="GUI01"  height="340" />
+
+### Step 2: setup model configurations / click Start
+
+<img src="./asset/GUI_02.png" alt ="GUI02"  height="340" />
+
+### Step 3: wait for the results or Stop the program
+
+<img src="./asset/GUI_03.png" alt ="GUI03"  height="340" />
+
+### Step 4: Edit (Data IO/Model Options) and Restart or Close the Program
+
+<img src="./asset/GUI_04.png" alt ="GUI04"  height="340" />
 
 The GUI is design with respect to the original python `argparse` setting with Gooey Packages.
 
@@ -41,39 +58,33 @@ The GUI is design with respect to the original python `argparse` setting with Go
 - Model Options: Time, Date, GPU, Pretrained model, Epochs, Batch Size, Learning Rate, Regularization.
 - Cancle/ Start Button to Execute the program.
 
-<img src="./asset/GUI_01.png" alt ="GUI01"  height="" />
-<img src="./asset/GUI_02.png" alt ="GUI02"  height="" />
-<img src="./asset/GUI_03.png" alt ="GUI03"  height="" />
-<img src="./asset/GUI_04.png" alt ="GUI04"  height="" />
-
 Notification: When Epochs Number is 0, it will load the pretrained model to predict the masks only without training.
 
 ### Suggestion: Use GPU and CUDA 11
 
-Here is my experimental result on case 2. As you can see on XPS 15 i7CPU with GPU 1050TI maxQ 4GB RAM with CUDA 11, each epoch takes about 4s.
+I test this repo with my XPS 15 Intel-i7-CPU with GPU-1050TI-maxQ-4GB-RAM & CUDA 11. ** It is fair to say GPU is at least 10 times faster than the CPU.**
 
-```bash
-Epoch 18/20: 100%|███████████████████ | 8/8 [00:04<00:00,  1.76it/s, loss=0.274017]
-Epoch 19/20: 100%|███████████████████ | 8/8 [00:04<00:00,  1.81it/s, loss=0.272246]
-Epoch 20/20: 100%|███████████████████ | 8/8 [00:04<00:00,  1.82it/s, loss=0.273455]
+Here is the training experimental Records on the sample image pair:
 
-```
+| Metric         | 5 Epochs | 100 Epochs | 200 Epochs |
+| -------------- | -------- | ---------- | ---------- |
+| # Accuracy     | 0.801270 | 0.937253   | 0.963028   |
+| # Sensitivity  | 0.811900 | 0.860760   | 0.686358   |
+| # Precision    | 0.260489 | 0.570543   | 0.820489   |
+| # Specificity  | 0.800349 | 0.943879   | 0.986993   |
+| # Fmeasure     | 0.394429 | 0.686229   | 0.747454   |
+| # MCC          | 0.383756 | 0.670022   | 0.731054   |
+| # Dice         | 0.394429 | 0.686229   | 0.747454   |
+| # IoU (Jacard) | 0.245663 | 0.522335   | 0.596748   |
 
-However, same code runs on mac-mini CPU only (i5) which takes 42s~43s.
-
-```bash
-Epoch  2/20: 100%|███████████████████| 8/8 [00:42<00:00,  5.34s/it, loss=0.349085]
-Epoch  3/20: 100%|███████████████████| 8/8 [00:43<00:00,  5.43s/it, loss=0.345961]
-Epoch  4/20:  50%|██████████         | 4/8 [00:25<00:25,  6.44s/it, loss=0.342271]
-# ctrl+c, can not wait for this to finish, 20*40s is 15 mins. On GPU this only cost 80s (1.33 mins)
-```
-
-** It is fair to say GPU is at least 10 times faster than the CPU.**
+<img src="./asset/epoch_005.png" alt ="epoch=5"  height="300" />
+<img src="./asset/epoch_100.png" alt ="epoch=100"  height="300" />
+<img src="./asset/epoch_200.png" alt ="epoch=200"  height="300" />
 
 ## Train (Deep) ConvNets - U-Nets with new data
 
 ```bash
-$ python train.py
+$ python train.py --epoch 1 # 1 (default) or 200
 ```
 
 or add arguments for different model inference configurations.
@@ -111,7 +122,7 @@ optional arguments:
 And that's how AI can help
 ```
 
-#### Output
+Output
 
 ```
 Epoch  1/200: 100%|██████████████████████| 223/223 [01:53<00:00,  1.96it/s, loss=0.653383]
@@ -133,11 +144,27 @@ $ python predict.py
 # python predict.py -h
 ```
 
-#### Output
+Output
 
-```
-(i) Prediction and Mask image saved at ./images/output/prediction.png
-(ii) Prediction and Mask image saved at ./images/output/mask.png
+```bash
+(base) ➜  aerial-image-segmentation git:(master) ✗ python predict.py
+GPU is not available and using CPU instead.
+use pretrained model!
+Image Labelling Complete in 0m 6s
+(i)    Prediction and Mask image saved at output//prediction.png
+(ii)   Mask image saved at output//mask.png
+================================================================
+[Metric Computation]
+Accuracy       =>   0.963028
+Sensitivity    =>   0.686358
+Precision      =>   0.820489
+Specificity    =>   0.986993
+Fmeasure       =>   0.747454
+MCC            =>   0.731054
+Dice           =>   0.747454
+IoU (Jacard)   =>   0.596748
+----------------------------------------------------------------
+model start: 22:16:56 end: 22:17:03.
 ```
 
 **RGB, GT, Mask, Prediction**:
@@ -146,7 +173,9 @@ $ python predict.py
 <img src="./images/GT.png " alt="Ground True Mask" height=250/>
 <img src="./output/mask.png " alt="Binary Mask" height=250/>
 <img src="./output/prediction.png " alt="Predicted" height=250/>
+
 **Binary with mask**:
+
 This is an binary mask, you can see there are extra works needed to improve the restuls. The improments can be from the `Deep Learning model` or the `Image Postprocessing method`.
 
 ### Reference
@@ -157,5 +186,10 @@ This is an binary mask, you can see there are extra works needed to improve the 
 - Semantic Image Segmentation with Deep Convolutional Nets and Fully Connected CRFs, Liang-Chieh Chen, George Papandreou, Iasonas Kokkinos, Kevin Murphy, and Alan L. Yuille, Proc. of ICLR, 2015.
 - Deeplab: Semantic Image Segmentation with Deep Convolutional Nets, Atrous Convolution, and Fully Connected CRFs, Liang-Chieh Chen, George Papandreou, Iasonas Kokkinos, Kevin Murphy, and Alan L. Yuille, TPAMI, 2017.
 - Rethinking Atrous Convolution for Semantic Image Segmentation, Liang-Chieh Chen, George Papandreou, Florian Schroff, and Hartwig Adam, arXiv:1706.05587, 2017.
+
+## Acknowledgement
+
+This repository is based on the original [repository](https://github.com/romanroibu/aerial-image-segmentation) by Roman Roibu.
+Improvements and Changes have been made due to the rapid development in deep learning community.
 
 ### --END--

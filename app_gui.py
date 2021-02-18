@@ -384,10 +384,10 @@ def dev_predit(args):
     pred_image, mask_image = utils.overlay_class_prediction(
         input_image, prediction)
 
-    pred_image_path = OUTPUT_IMAGE_PATH + "prediction.png"
+    pred_image_path = OUTPUT_IMAGE_PATH + "/prediction.png"
     pred_image.save(pred_image_path)
 
-    pred_mask_path = OUTPUT_IMAGE_PATH + "mask.png"
+    pred_mask_path = OUTPUT_IMAGE_PATH + "/mask.png"
     mask_image.save(pred_mask_path)
 
     print("(i) Prediction and Mask image saved at {}".format(pred_image_path))

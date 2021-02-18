@@ -20,7 +20,7 @@ def app_argparse():
     parser = argparse.ArgumentParser(prog='AIL: Aerial Image Labelling',
                                      usage='%(prog)s [options]',
                                      description='Aerial Image Labelling with Deep Learning.',
-                                     epilog="And that's how AI can help")
+                                     epilog="And this is how AI can help")
 
     # Adding arguments
     # positional arguments:
