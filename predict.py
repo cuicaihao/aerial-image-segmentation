@@ -47,15 +47,15 @@ def predict(model, data_loader, device, class_label):
 
     time_elapsed = time.time() - since
     print(
-        "Training complete in {:.0f}m {:.0f}s".format(
+        "Image Labelling Complete in {:.0f}m {:.0f}s".format(
             time_elapsed // 60, time_elapsed % 60
         )
     )
     if class_label == ClassLabel.background:
-        return torch.max(y_full, dim=1)[1]
+        return torch.max(-y_full, dim=1)[1]
 
     if class_label == ClassLabel.house:
-        return torch.max(-y_full, dim=1)[1]
+        return torch.max(y_full, dim=1)[1]
 
     # TODO: Subclass error
     raise ValueError("Unknown class label: {}".format(class_label))
@@ -97,7 +97,7 @@ def metricComputation(A, B):
     scores["Fmeasure"] = Fmeasure
     scores["MCC"] = MCC
     scores["Dice"] = Dice
-    scores["Jaccard"] = Jaccard
+    scores["IoU (Jacard)"] = Jaccard
     print("="*64)
     print("[Metric Computation] ")
     for k, v in scores.items():
@@ -114,7 +114,7 @@ if __name__ == "__main__":
     # Step 01: Get Input Resources and Model Configuration
     parser = app_argparse()
     args = parser.parse_args()
-    print(args)
+    # print(args)
 
     use_gpu = args.use_gpu
     tile_size = args.tile_size
@@ -131,7 +131,7 @@ if __name__ == "__main__":
     model = utils.load_entire_model(model, WEIGHTS_FILE_PATH, use_gpu)
     print("use pretrained model!")
     # print(model)
-    summary(model, (3, tile_size[0], tile_size[1]))
+    # summary(model, (3, tile_size[0], tile_size[1]))
 
     # this is issue !!!
     loader = dataset.full_image_loader(
@@ -157,7 +157,6 @@ if __name__ == "__main__":
     # Step 04: Check the metrics
 
     img_gt = np.array(Image.open(LABEL_IMAGE_PATH), dtype=np.int32)
-    img_gt = 255 - img_gt
     img_mask = np.array(Image.open(pred_mask_path), dtype=np.int32)
 
     metricComputation(img_gt, img_mask)

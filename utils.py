@@ -177,7 +177,7 @@ def extend_image(image, new_size, color=0):
     return new_image
 
 
-def overlay_class_prediction(image, prediction, color=(255, 0, 0)):  # color in red
+def overlay_class_prediction(image, prediction, color=(88, 226, 212)):  # color in red
 
     input_image = image
 

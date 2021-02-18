@@ -122,7 +122,7 @@ Epoch  3/200: 100%|████████████████████�
 (i) Loss plot saved at ./images/output/loss_plot.png
 ```
 
-<img src="./output/case_3/400%20epochs/loss_plot.png " alt="Loss plot" height=250/>
+<img src="output/loss_plot.png" alt="Loss plot" height=250/>
 
 ## Predict (Training Validation)
 
@@ -140,11 +140,12 @@ $ python predict.py
 (ii) Prediction and Mask image saved at ./images/output/mask.png
 ```
 
-**Prediction with mask**:
+**RGB, GT, Mask, Prediction**:
 
-<img src="./output/case_3/400%20epochs/prediction.png " alt="Predicted" height=250/>
-<img src="./output/case_3/400%20epochs/mask.png " alt="Binary Mask" height=250/>
-
+<img src="./images/RGB.png " alt="Ground True Mask" height=250/>
+<img src="./images/GT.png " alt="Ground True Mask" height=250/>
+<img src="./output/mask.png " alt="Binary Mask" height=250/>
+<img src="./output/prediction.png " alt="Predicted" height=250/>
 **Binary with mask**:
 This is an binary mask, you can see there are extra works needed to improve the restuls. The improments can be from the `Deep Learning model` or the `Image Postprocessing method`.
 

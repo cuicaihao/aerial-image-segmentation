@@ -9,14 +9,12 @@ Created on   :2021/02/18 20:27:53
 @License :   (C)Copyright 2020 MIT
 '''
 
-# here put the import lib
-
 """
 A simple Gooey example. One required field, one optional.
 """
 
 
-from __future__ import print_function
+# from __future__ import print_function
 from matplotlib import style
 from predict import predict
 from predict import metricComputation
@@ -397,7 +395,6 @@ def dev_predit(args):
 
     # Show Metrics Computation
     img_gt = np.array(Image.open(LABEL_IMAGE_PATH), dtype=np.int32)
-    img_gt = 255 - img_gt
     img_mask = np.array(Image.open(pred_mask_path), dtype=np.int32)
 
     metricComputation(img_gt, img_mask)
