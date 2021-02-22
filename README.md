@@ -1,8 +1,8 @@
 # Aerial Image Segmentation with PyTorch (2021 v1.7.1)
 
-Aerial Image Labeling addresses a core topic in remote sensing: the automatic pixelwise labeling of aerial imagery. The UNet leads to more advanced design in Aerial Image Segmentation. Future updates will gradually apply those method into this repository.
+Aerial Image Labeling addresses a core topic in remote sensing: the automatic pixel-wise labelling of aerial imagery. The UNet leads to more advanced design in Aerial Image Segmentation. Future updates will gradually apply those methods into this repository.
 
-This repo used only one sample (`kitsap11.tif `) from the public dataset ([Inria Aeril Image Labelling ](https://project.inria.fr/aerialimagelabeling/leaderboard/)) to demonstrate the power of deep learning.
+This repo used only one sample (`kitsap11.tif `) from the public dataset ([Inria Aerial Image Labelling ](https://project.inria.fr/aerialimagelabeling/leaderboard/)) to demonstrate the power of deep learning.
 
 Data processing steps and codes can be find in this [file]("images/image_data.md"). The original sample has been preprocessed into 1000x1000 with 1.5 meter resolution.
 
@@ -52,19 +52,19 @@ python app_gui.py
 
 <img src="./asset/GUI_04.png" alt ="GUI04"  height="340" />
 
-The GUI is design with respect to the original python `argparse` setting with Gooey Packages.
+The GUI is designed with respect to the original python `argparse` setting with Gooey Packages.
 
 - Data IO: input and output file and paths.
 - Model Options: Time, Date, GPU, Pretrained model, Epochs, Batch Size, Learning Rate, Regularization.
-- Cancle/ Start Button to Execute the program.
+- Cancel/ Start Button to Execute the program.
 
-Notification: When Epochs Number is 0, it will load the pretrained model to predict the masks only without training.
+Notification: When Epochs Number is 0, it will load the pre-trained model to predict the masks only without training.
 
 ### Suggestion: Use GPU and CUDA 11
 
 I test this repo with my XPS 15 Intel-i7-CPU with GPU-1050TI-maxQ-4GB-RAM & CUDA 11. ** It is fair to say GPU is at least 10 times faster than the CPU.**
 
-Here is the training experimental Records on the sample image pair:
+Here are the training experimental Records on the sample image pair:
 
 | Metric         | 5 Epochs | 100 Epochs | 200 Epochs |
 | -------------- | -------- | ---------- | ---------- |
@@ -149,7 +149,7 @@ Output
 ```bash
 (base) ➜  aerial-image-segmentation git:(master) ✗ python predict.py
 GPU is not available and using CPU instead.
-use pretrained model!
+use pre-trained model!
 Image Labelling Complete in 0m 6s
 (i)    Prediction and Mask image saved at output//prediction.png
 (ii)   Mask image saved at output//mask.png
@@ -176,7 +176,7 @@ model start: 22:16:56 end: 22:17:03.
 
 **Binary with mask**:
 
-This is an binary mask, you can see there are extra works needed to improve the restuls. The improments can be from the `Deep Learning model` or the `Image Postprocessing method`.
+This is a binary mask, you can see there are extra works needed to improve the results. The improments can be from the `Deep Learning model` or the `Image Postprocessing method`.
 
 ### Reference
 
@@ -190,6 +190,6 @@ This is an binary mask, you can see there are extra works needed to improve the 
 ## Acknowledgement
 
 This repository is based on the original [repository](https://github.com/romanroibu/aerial-image-segmentation) by Roman Roibu.
-Improvements and Changes have been made due to the rapid development in deep learning community.
+Improvements and changes have been made due to the rapid development in deep learning community.
 
 ### --END--
