@@ -139,5 +139,6 @@ dmypy.json
 .pytype/
 runs/
 _local_backup/ 
+weights/
 temp.py
 app_gui-args.json
