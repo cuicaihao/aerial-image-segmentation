@@ -1,5 +1,5 @@
 absl-py==0.10.0
-aiohttp==3.7.3
+aiohttp==3.7.4
 altgraph @ file:///home/conda/feedstock_root/build_artifacts/altgraph_1606335843931/work
 anyio @ file:///Users/runner/miniforge3/conda-bld/anyio_1609601102095/work/dist
 appdirs==1.4.4
