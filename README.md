@@ -38,19 +38,19 @@ python app_gui.py
 
 ### Step 1: select the image and file paths.
 
-<img src="./asset/GUI_01.png" alt ="GUI01"  height="340" />
+<img src="./asset/GUI_01.png" alt ="GUI01"  height="540" />
 
 ### Step 2: setup model configurations / click Start
 
-<img src="./asset/GUI_02.png" alt ="GUI02"  height="340" />
+<img src="./asset/GUI_02.png" alt ="GUI02"  height="540" />
 
 ### Step 3: wait for the results or Stop the program
 
-<img src="./asset/GUI_03.png" alt ="GUI03"  height="340" />
+<img src="./asset/GUI_03.png" alt ="GUI03"  height="540" />
 
 ### Step 4: Edit (Data IO/Model Options) and Restart or Close the Program
 
-<img src="./asset/GUI_04.png" alt ="GUI04"  height="340" />
+<img src="./asset/GUI_04.png" alt ="GUI04"  height="540" />
 
 The GUI is designed with respect to the original python `argparse` setting with Gooey Packages.
 
@@ -133,7 +133,7 @@ Epoch  3/200: 100%|████████████████████�
 (i) Loss plot saved at ./images/output/loss_plot.png
 ```
 
-<img src="output/loss_plot.png" alt="Loss plot" height=250/>
+<img src="output/loss_plot.png" alt="Loss plot" height=450/>
 
 ## Predict (Training Validation)
 
@@ -169,10 +169,10 @@ model start: 22:16:56 end: 22:17:03.
 
 **RGB, GT, Mask, Prediction**:
 
-<img src="./images/RGB.png " alt="Ground True Mask" height=250/>
-<img src="./images/GT.png " alt="Ground True Mask" height=250/>
-<img src="./output/mask.png " alt="Binary Mask" height=250/>
-<img src="./output/prediction.png " alt="Predicted" height=250/>
+<img src="./images/RGB.png " alt="Ground True Mask" height=450/>
+<img src="./images/GT.png " alt="Ground True Mask" height=450/>
+<img src="./output/mask.png " alt="Binary Mask" height=450/>
+<img src="./output/prediction.png " alt="Predicted" height=450/>
 
 **Binary with mask**:
 
