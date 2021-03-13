@@ -55,7 +55,7 @@ def app_argparse():
     parser.add_argument('--tile_size', nargs=2, default=(250, 250), type=int,
                         help='input tile size ')
 
-    parser.add_argument('--epochs',  default=1, type=int,
+    parser.add_argument('--epochs',  default=5, type=int,
                         help='epoch number')
 
     parser.add_argument('--batch_size',  default=4, type=int,

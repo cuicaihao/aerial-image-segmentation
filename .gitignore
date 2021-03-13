@@ -142,3 +142,4 @@ _local_backup/
 weights/
 temp.py
 app_gui-args.json
+output/

@@ -8,7 +8,9 @@ import time
 import torch
 import utils
 import dataset
-from model import FCNN
+
+from model import FCNN, UNet
+
 from loss import CrossEntropyLoss2d
 from datetime import datetime
 from torchsummary import summary
@@ -21,6 +23,7 @@ from gooey import Gooey
 
 import io
 from contextlib import redirect_stderr
+from pathlib import Path
 
 
 def train(
@@ -35,7 +38,8 @@ def train(
     weight_decay=5e-3,
 ):
 
-    writer = SummaryWriter("runs/aerial_image_segmentation")
+    writer = SummaryWriter(
+        comment=f'LR_{learning_rate}_BS_{batch_size}_Epochs_{epochs}')
 
     since = time.time()
     criterion = CrossEntropyLoss2d()
@@ -73,19 +77,16 @@ def train(
                 training_stats.append_loss(loss.item())
 
                 loader_with_progress.set_postfix(epoch_stats.fmt_dict())
-                print(flush=True)
+                # print(flush=True)
                 # sys.stdout.flush()
 
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
-                running_loss += loss.item()
 
-        writer.add_scalar(
-            "training loss", running_loss /
-            batch_size, n * len(train_loader) + i
-        )
-        running_loss = 0.0
+                writer.add_scalar(
+                    "training loss", loss.item(), n * len(train_loader) + i
+                )
 
     time_elapsed = time.time() - since
     print(
@@ -94,15 +95,15 @@ def train(
         )
     )
 
+    writer.add_graph(model, x)
+    writer.close()
+
     # print('Best val Acc: {:4f}'.format(best_acc))
     return model, training_stats
 
 
-if __name__ == "__main__":
-    now = datetime.now()
-    start_time = now.strftime("%H:%M:%S")
+def main_FCNN():
 
-    # TODO: Get through CLI args
     # Step 01: Get Input Resources and Model Configuration
     parser = app_argparse()
     args = parser.parse_args()
@@ -156,6 +157,75 @@ if __name__ == "__main__":
 
     # save the loss figure and data
     stats.save_loss_plot(LOSS_PLOT_PATH)
+
+
+def main_UNet():
+
+    # Step 01: Get Input Resources and Model Configuration
+    parser = app_argparse()
+    args = parser.parse_args()
+
+    INPUT_IMAGE_PATH = args.input_RGB
+    LABEL_IMAGE_PATH = args.input_GT
+    # WEIGHTS_FILE_PATH = args.output_model_path
+    WEIGHTS_FILE_PATH = "weights/Adam.UNet.weights.pt"
+    # LOSS_PLOT_PATH = args.output_loss_plot
+    OUTPUT_IMAGE_PATH = args.output_images
+
+    print(args)
+    use_gpu = args.use_gpu
+    use_pretrain = args.use_pretrain
+
+    epochs = args.epochs
+    batch_size = args.batch_size
+    tile_size = args.tile_size
+    learning_rate = args.learning_rate
+    weight_decay = args.weight_decay
+
+    # Step 02: load the pretrained model
+    device = utils.device(use_gpu=use_gpu)
+    # init model structure
+    model = UNet()
+    # model = utils.load_weights_from_disk(model)
+    if use_pretrain and Path(WEIGHTS_FILE_PATH).is_file():
+
+        model = utils.load_entire_model(model, WEIGHTS_FILE_PATH, use_gpu)
+        print("use pretrained model!")
+    else:
+        print("build new model")
+
+    train_loader = dataset.training_loader(image_path=INPUT_IMAGE_PATH,
+                                           label_path=LABEL_IMAGE_PATH,
+                                           batch_size=batch_size,
+                                           tile_size=tile_size,
+                                           shuffle=True  # use shuffle
+                                           )  # turn the shuffle
+
+    model, stats = train(
+        model=model,
+        train_loader=train_loader,
+        device=device,
+        epochs=epochs,
+        batch_size=batch_size,
+        tile_size=tile_size,
+        learning_rate=learning_rate,
+        weight_decay=weight_decay,
+    )
+
+    # comment the following section to compare the results with 4 workers and pin_memory in dataloader.
+    # Step 03: save the model
+    # model_path = utils.save_weights_to_disk(model)
+    model_path = utils.save_entire_model(model, WEIGHTS_FILE_PATH)
+
+    # save the loss figure and data
+    stats.save_loss_plot(OUTPUT_IMAGE_PATH)
+
+
+if __name__ == "__main__":
+    now = datetime.now()
+    start_time = now.strftime("%H:%M:%S")
+
+    main_UNet()
 
     # show time cost
     now = datetime.now()

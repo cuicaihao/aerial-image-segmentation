@@ -19,7 +19,7 @@ import io
 
 import matplotlib
 import matplotlib.pyplot as plt
-
+from pathlib import Path
 
 # https://matplotlib.org/faq/usage_faq.html#what-is-a-backend
 matplotlib.use("Agg")
@@ -57,15 +57,31 @@ class Stats:
         return np.mean(self.__losses)
 
     def save_loss_plot(self, fpath):
-        plt.plot(self.__losses)
-        plt.title("Loss")
-        plt.ylabel("loss")
+        err_records = self.save_loss_data(fpath)
+        plt.plot(err_records)
+        plt.title("Cross Entropy Loss2d")
+        plt.ylabel("negative log likelihood")
         plt.xlabel("iter")
-        plt.ylim(ymin=0, ymax=int(math.ceil(np.max(self.__losses))))
-        plt.savefig(fpath)
+        plt.ylim(ymin=0, ymax=int(math.ceil(np.max(err_records))))
+        # over write the error records figure
+        figPath = fpath + "/loss_plot.png"
+        plt.savefig(figPath)
         plt.close()
-        print("(ii) Loss plot saved at {}".format(fpath))
-        np.save(fpath + ".npy", self.__losses)
+        print("(ii) Loss plot saved at {}".format(figPath))
+
+    def save_loss_data(self, fpath):
+        # read last time records
+        # append the new error records
+        # save
+        fpath_npy = fpath + "/loss_data.npy"
+        if Path(fpath_npy).is_file():
+            last_error_records = np.load(fpath_npy)
+        else:
+            last_error_records = np.array([])
+        err_records = np.append(last_error_records, self.__losses)
+        # over write the error records
+        np.save(fpath_npy, err_records)
+        return err_records
 
     def fmt_dict(self):
         return {"loss": format(self.loss_mean, self.__float_fmt)}
