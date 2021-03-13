@@ -178,6 +178,31 @@ model start: 22:16:56 end: 22:17:03.
 
 This is a binary mask, you can see there are extra works needed to improve the results. The improments can be from the `Deep Learning model` or the `Image Postprocessing method`.
 
+### 2021 Mar 13 Sat 18:22:45
+
+Add UNet Model:
+
+```bash
+(rs) ➜  aerial-image-segmentation git:(master) ✗ python predict.py
+GPU is not available and using CPU instead.
+use pretrained model!
+Image Labelling Complete in 0m 15s
+(i)    Prediction and Mask image saved at output//prediction.png
+(ii)   Mask image saved at output//mask.png
+================================================================
+[Metric Computation]
+Accuracy       =>   0.976881
+Sensitivity    =>   0.816324
+Precision      =>   0.884739
+Specificity    =>   0.990788
+Fmeasure       =>   0.849156
+MCC            =>   0.837453
+Dice           =>   0.849156
+IoU (Jacard)   =>   0.737855
+----------------------------------------------------------------
+model start: 18:13:42 end: 18:13:57.
+```
+
 ### Reference
 
 - Encoder-Decoder with Atrous Separable Convolution for Semantic Image Segmentation, Liang-Chieh Chen, Yukun Zhu, George Papandreou, Florian Schroff, and Hartwig Adam, arXiv: 1802.02611, 2018.
