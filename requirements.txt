@@ -184,7 +184,7 @@ python-dateutil==2.8.1
 python-slugify==4.0.1
 pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1608904108784/work
 PyWavelets @ file:///Users/runner/miniforge3/conda-bld/pywavelets_1602504450609/work
-PyYAML==5.3.1
+PyYAML==5.4
 pyzmq==20.0.0
 rarfile @ file:///package/rarfile-3.0.tar.gz
 recordio==0.1
