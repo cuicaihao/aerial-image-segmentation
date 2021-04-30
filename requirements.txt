@@ -193,7 +193,7 @@ requests @ file:///home/conda/feedstock_root/build_artifacts/requests_1608156231
 requests-oauthlib==1.3.0
 retrying==1.3.3
 rich==9.2.0
-rsa==4.6
+rsa==4.7
 ruamel-yaml-conda @ file:///Users/runner/miniforge3/conda-bld/ruamel_yaml_1602430353696/work
 scalene==1.1.10
 scikit-image==0.17.2
