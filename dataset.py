@@ -17,6 +17,38 @@ import numpy as np
 
 import utils
 import torch.utils.data
+from skimage.io import imread, imsave
+
+import os
+import numpy as np
+
+
+class DatasetSegmentation(torch.utils.data.Dataset):
+    def __init__(self, image_path, label_path):
+        #         super(DataLoaderSegmentation, self).__init__()
+        self.imgfolder = image_path
+        self.maskfolder = label_path
+        self.imgs = list(sorted(os.listdir(image_path)))
+        self.masks = list(sorted(os.listdir(label_path)))
+
+    def __getitem__(self, idx):
+        img_path = os.path.join(self.imgfolder, self.imgs[idx])
+        mask_path = os.path.join(self.maskfolder, self.masks[idx])
+        data = imread(img_path)
+        data = np.moveaxis(data, -1, 0)
+        label = imread(mask_path)
+        label = label/255
+        return torch.from_numpy(data).float(), torch.from_numpy(label).long()
+
+    def __len__(self):
+        return len(self.imgs)
+
+
+def create_image_loader(image_path, label_path, batch_size=16, shuffle=True):
+    dataset = DatasetSegmentation(image_path, label_path)
+    loader = torch.utils.data.DataLoader(
+        dataset, batch_size=batch_size, shuffle=shuffle, num_workers=4)
+    return loader
 
 
 def full_image_loader(image_path, label_path, tile_size):

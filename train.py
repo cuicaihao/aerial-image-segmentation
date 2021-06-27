@@ -221,11 +221,78 @@ def main_UNet():
     stats.save_loss_plot(OUTPUT_IMAGE_PATH)
 
 
+def main_UNet_via_Folder():
+
+    # Step 01: Get Input Resources and Model Configuration
+    parser = app_argparse()
+    args = parser.parse_args()
+    # INPUT_IMAGE_PATH = args.input_RGB
+    # LABEL_IMAGE_PATH = args.input_GT
+    INPUT_IMAGE_PATH = "data/Aerial/RGBRandom"
+    LABEL_IMAGE_PATH = "data/Aerial/GTRandom"
+    # WEIGHTS_FILE_PATH = args.output_model_path
+    WEIGHTS_FILE_PATH = "weights/Adam.UNet.weights.II.pt"
+    # LOSS_PLOT_PATH = args.output_loss_plot
+    OUTPUT_IMAGE_PATH = args.output_images
+
+    print(args)
+
+    use_gpu = args.use_gpu
+    use_pretrain = True
+
+    # epochs = args.epochs
+
+    epochs = 10
+
+    batch_size = args.batch_size
+    tile_size = args.tile_size
+    learning_rate = args.learning_rate
+    weight_decay = args.weight_decay
+
+    # Step 02: load the pretrained model
+    device = utils.device(use_gpu=use_gpu)
+    # init model structure
+    model = UNet()
+    # model = utils.load_weights_from_disk(model)
+    if use_pretrain and Path(WEIGHTS_FILE_PATH).is_file():
+
+        model = utils.load_entire_model(model, WEIGHTS_FILE_PATH, use_gpu)
+        print("use pretrained model!")
+    else:
+        print("build new model")
+
+    train_loader = dataset.create_image_loader(image_path=INPUT_IMAGE_PATH,
+                                               label_path=LABEL_IMAGE_PATH,
+                                               batch_size=batch_size,
+                                               shuffle=True  # use shuffle
+                                               )  # turn the shuffle
+
+    model, stats = train(
+        model=model,
+        train_loader=train_loader,
+        device=device,
+        epochs=epochs,
+        batch_size=batch_size,
+        tile_size=tile_size,
+        learning_rate=learning_rate,
+        weight_decay=weight_decay,
+    )
+
+    # comment the following section to compare the results with 4 workers and pin_memory in dataloader.
+    # Step 03: save the model
+    # model_path = utils.save_weights_to_disk(model)
+    model_path = utils.save_entire_model(model, WEIGHTS_FILE_PATH)
+
+    # save the loss figure and data
+    stats.save_loss_plot(OUTPUT_IMAGE_PATH)
+
+
 if __name__ == "__main__":
     now = datetime.now()
     start_time = now.strftime("%H:%M:%S")
 
-    main_UNet()
+    # main_UNet()
+    main_UNet_via_Folder()
 
     # show time cost
     now = datetime.now()

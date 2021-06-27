@@ -138,8 +138,12 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 runs/
-_local_backup/ 
+_local_backup/
 weights/
 temp.py
 app_gui-args.json
 output/
+
+images/demo_case_boxhill/
+images/demo_case_capetown/
+data/Aerial/
