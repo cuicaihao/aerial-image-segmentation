@@ -209,7 +209,7 @@ sniffio @ file:///Users/runner/miniforge3/conda-bld/sniffio_1606397282082/work
 style==1.1.0
 tensorboard==2.4.0
 tensorboard-plugin-wit==1.7.0
-tensorflow==2.4.0
+tensorflow==2.5.3
 tensorflow-datasets==4.2.0
 tensorflow-docs @ git+https://github.com/tensorflow/docs@eabe65fc33d590bfb98b1f395126b8f39489f132
 tensorflow-estimator==2.4.0
