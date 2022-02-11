@@ -154,7 +154,7 @@ prettytable @ file:///package/prettytable-0.7.tar.gz
 prometheus-client @ file:///home/conda/feedstock_root/build_artifacts/prometheus_client_1605543085815/work
 promise==2.3
 prompt-toolkit @ file:///home/conda/feedstock_root/build_artifacts/prompt-toolkit_1605053337398/work
-protobuf==3.14.0
+protobuf==3.15.0
 psutil @ file:///Users/runner/miniforge3/conda-bld/psutil_1603571015870/work
 ptyprocess @ file:///home/conda/feedstock_root/build_artifacts/ptyprocess_1609419310487/work/dist/ptyprocess-0.7.0-py2.py3-none-any.whl
 py @ file:///home/conda/feedstock_root/build_artifacts/py_1607783655754/work
