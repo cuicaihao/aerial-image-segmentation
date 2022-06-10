@@ -36,7 +36,7 @@ colorlog==4.7.2
 commonmark==0.9.1
 conda==4.9.2
 conda-package-handling @ file:///Users/runner/miniforge3/conda-bld/conda-package-handling_1602876819663/work
-cookiecutter==1.7.2
+cookiecutter==2.1.1
 cryptography @ file:///Users/runner/miniforge3/conda-bld/cryptography_1607606172619/work
 cycler==0.10.0
 Cython==0.29.21
