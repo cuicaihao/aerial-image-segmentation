@@ -125,7 +125,7 @@ networkx @ file:///home/conda/feedstock_root/build_artifacts/networkx_1598210780
 nltk==3.4.5
 nodeenv==1.5.0
 notebook @ file:///Users/runner/miniforge3/conda-bld/notebook_1605103840966/work
-numpy==1.19.5
+numpy==1.22.0
 oauthlib==3.1.0
 objgraph @ file:///package/objgraph-3.4.1.tar.gz
 olefile @ file:///home/conda/feedstock_root/build_artifacts/olefile_1602866521163/work
