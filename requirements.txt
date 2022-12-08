@@ -23,7 +23,7 @@ bokeh @ file:///Users/runner/miniforge3/conda-bld/bokeh_1603280838641/work
 Brotli @ file:///Users/runner/miniforge3/conda-bld/brotli-split_1603546210212/work
 brotlipy==0.7.0
 cachetools==4.1.1
-certifi==2020.12.5
+certifi==2022.12.7
 cffi @ file:///Users/runner/miniforge3/conda-bld/cffi_1606601144314/work
 cfgv==3.2.0
 chardet @ file:///Users/runner/miniforge3/conda-bld/chardet_1607673816583/work
