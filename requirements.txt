@@ -237,7 +237,7 @@ virtualenv==20.4.0
 visualdl==2.1.0
 wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1600965781394/work
 webencodings==0.5.1
-Werkzeug==1.0.1
+Werkzeug==2.2.3
 widgetsnbextension @ file:///Users/runner/miniforge3/conda-bld/widgetsnbextension_1605475527869/work
 wrapt @ file:///Users/runner/miniforge3/conda-bld/wrapt_1606141227356/work
 wxPython==4.1.0
