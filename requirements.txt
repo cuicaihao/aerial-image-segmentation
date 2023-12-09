@@ -172,7 +172,7 @@ pyflakes==2.2.0
 pyglet==1.5.0
 Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1607352093725/work
 pygtrie==2.4.1
-pyinstaller==4.1
+pyinstaller==5.13.1
 pyinstaller-hooks-contrib==2020.10
 pyOpenSSL @ file:///home/conda/feedstock_root/build_artifacts/pyopenssl_1608055815057/work
 pyparsing==2.4.7
