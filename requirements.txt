@@ -167,7 +167,7 @@ pycocotools==2.0.2
 pycodestyle @ file:///home/conda/feedstock_root/build_artifacts/pycodestyle_1589305246696/work
 pycosat @ file:///Users/runner/miniforge3/conda-bld/pycosat_1602277865904/work
 pycparser @ file:///home/conda/feedstock_root/build_artifacts/pycparser_1593275161868/work
-pycryptodome==3.9.9
+pycryptodome==3.19.1
 pyflakes==2.2.0
 pyglet==1.5.0
 Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1607352093725/work
